@@ -1,5 +1,6 @@
 package io.github.joskuijpers.datamining_challenge;
 
+import java.util.Comparator;
 import java.util.Locale;
 
 public class Main {
@@ -8,6 +9,7 @@ public class Main {
 		// Create user list, movie list, and list of ratings
 		UserList userList = new UserList();
 		userList.readFile("data/users.csv");
+		
 		MovieList movieList = new MovieList();
 		movieList.readFile("data/movies.csv");
 		RatingList ratings = new RatingList();
@@ -21,7 +23,7 @@ public class Main {
 		predictRatings(userList, movieList, ratings, predRatings);
 
 		// Write result file
-		predRatings.writeResultsFile("submission.csv");	
+		predRatings.writeResultsFile("submission2.csv");	
 	}
 	
 	public static RatingList predictRatings(UserList userList,
@@ -35,12 +37,32 @@ public class Main {
 					* ratingList.get(i).getRating();
 		}
 
-		// Predict mean everywhere
-		for (int i = 0; i < predRatings.size(); i++) {
-			predRatings.get(i).setRating(mean);
+
+		
+		//Het uitrekenen van de gemiddelde movierating
+		for (int i = 1; i < ratingList.size(); i++) {
+			ratingList.get(i).getMovie().updateAverage(ratingList.get(i).getRating());
 		}
+		
+		//Het uitrekenen van de gemiddelde bias per user
+		for (int i = 1; i < ratingList.size(); i++) {
+			ratingList.get(i).getUser().updateBias(ratingList.get(i).getRating(), ratingList.get(i).getMovie().getAverage());
+		}
+		
+
+		
+		// Predict with average per movie and bias per user.
+		for (int i = 0; i < predRatings.size(); i++) {
+			Double temp = predRatings.get(i).getMovie().getAverage() + predRatings.get(i).getUser().getBias();	
+			if(temp>5.0)temp=5.0;
+			if(temp<0.0)temp=0.0;
+			predRatings.get(i).setRating(temp);
+		}
+			
 
 		// Return predictions
 		return predRatings;
 	}
+
+
 }
