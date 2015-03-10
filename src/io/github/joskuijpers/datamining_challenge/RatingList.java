@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class RatingList extends ArrayList<Rating> {
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	// Reads in a file with rating data
 	public void readFile(String filename, UserList userList, MovieList movieList) {
