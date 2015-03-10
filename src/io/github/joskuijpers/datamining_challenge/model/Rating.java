@@ -1,4 +1,4 @@
-package io.github.joskuijpers.datamining_challenge;
+package io.github.joskuijpers.datamining_challenge.model;
 
 public class Rating {
 	private User user;

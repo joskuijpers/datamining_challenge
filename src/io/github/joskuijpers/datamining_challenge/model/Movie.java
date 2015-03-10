@@ -1,10 +1,16 @@
-package io.github.joskuijpers.datamining_challenge;
+package io.github.joskuijpers.datamining_challenge.model;
+
+import java.util.List;
 
 public class Movie {
 	private int index, year;
 	private String title;
+	
 	private double averageRating = 0.0;
 	private int numberOfRatings = 0;
+	
+	private int metascore;
+	private List<String> genres;
 
 	public Movie(int _index, int _year, String _title) {
 		this.index = _index;

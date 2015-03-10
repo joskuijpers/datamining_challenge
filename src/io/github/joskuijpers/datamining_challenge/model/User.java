@@ -1,4 +1,4 @@
-package io.github.joskuijpers.datamining_challenge;
+package io.github.joskuijpers.datamining_challenge.model;
 
 public class User {
 	private int index, age, profession;

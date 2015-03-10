@@ -1,4 +1,4 @@
-package io.github.joskuijpers.datamining_challenge;
+package io.github.joskuijpers.datamining_challenge.model;
 
 import java.util.ArrayList;
 import java.io.FileReader;

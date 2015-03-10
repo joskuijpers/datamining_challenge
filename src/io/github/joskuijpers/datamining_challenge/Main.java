@@ -1,5 +1,10 @@
 package io.github.joskuijpers.datamining_challenge;
 
+import io.github.joskuijpers.datamining_challenge.model.MovieList;
+import io.github.joskuijpers.datamining_challenge.model.Rating;
+import io.github.joskuijpers.datamining_challenge.model.RatingList;
+import io.github.joskuijpers.datamining_challenge.model.UserList;
+
 import java.util.Locale;
 
 public class Main {

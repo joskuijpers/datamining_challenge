@@ -1,14 +1,9 @@
-package io.github.joskuijpers.datamining_challenge;
+package io.github.joskuijpers.datamining_challenge.model;
 
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-/**
- * 
- * @author Jan
- *
- */
 public class MovieList extends ArrayList<Movie> {
 	private static final long serialVersionUID = 1L;
 
