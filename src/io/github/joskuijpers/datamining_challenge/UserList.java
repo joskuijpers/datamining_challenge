@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class UserList extends ArrayList<User> {
+public class UserList extends ArrayList<BiasedUser> {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -17,7 +17,7 @@ public class UserList extends ArrayList<User> {
 			while ((line = br.readLine()) != null) {
 				String[] userData = line.split(";");
 				add(Integer.parseInt(userData[0]) - 1,
-						new User(Integer.parseInt(userData[0]), userData[1]
+						new BiasedUser(Integer.parseInt(userData[0]), userData[1]
 								.equals("M"), Integer.parseInt(userData[2]),
 								Integer.parseInt(userData[3])));
 			}

@@ -3,7 +3,12 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class MovieList extends ArrayList<Movie> {
+/**
+ * 
+ * @author Jan
+ *
+ */
+public class MovieList extends ArrayList<AvarageMovie> {
 	private static final long	serialVersionUID	= 1L;
 
 	// Reads in a file with movies data
@@ -15,7 +20,7 @@ public class MovieList extends ArrayList<Movie> {
             while((line = br.readLine()) != null) {
                 String[] movieData = line.split(";");
                 add(Integer.parseInt(movieData[0]) - 1,
-                    new Movie(Integer.parseInt(movieData[0]),
+                    new AvarageMovie(Integer.parseInt(movieData[0]),
                               Integer.parseInt(movieData[1]),
                               movieData[2]));
             }

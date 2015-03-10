@@ -1,28 +1,28 @@
 package io.github.joskuijpers.datamining_challenge;
 
 public class Rating {
-    private User user;
-    private Movie movie;
+    private BiasedUser user;
+    private AvarageMovie movie;
     private double rating;
     
-	public Rating(User _user, Movie _movie, int _rating) {
+	public Rating(BiasedUser _user, AvarageMovie _movie, int _rating) {
         this.user      = _user;
         this.movie     = _movie;
         this.rating    = (double) _rating;
     }
     
-    public Rating(User _user, Movie _movie, double _rating) {
+    public Rating(BiasedUser _user, AvarageMovie _movie, double _rating) {
         this.user      = _user;
         this.movie     = _movie;
         this.rating    = _rating;
     }
 
     
-    public User getUser() {
+    public BiasedUser getUser() {
         return user;
     }
     
-    public Movie getMovie() {
+    public AvarageMovie getMovie() {
         return movie;
     }
     
