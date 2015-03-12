@@ -13,12 +13,7 @@ public class PredictTier extends Tier {
 	/**
 	 * Calculate the predictions.
 	 * 
-	 * Formula: r_xi = am_x + bu_i
-	 * 	r = rating
- 	 *  x = movie
- 	 *  i = user
- 	 *  am = average of movie
- 	 *  bu = bias of user
+	 * Formula: Rating_mu = MovieMean + MoviaBias_m + UserBias_u
  	 *  
 	 * @param data
 	 * @return
