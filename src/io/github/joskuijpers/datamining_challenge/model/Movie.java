@@ -1,17 +1,16 @@
 package io.github.joskuijpers.datamining_challenge.model;
 
-import java.util.List;
-
 public class Movie {
-	private int index, year;
+	private int index;
+	
+	// Factors
+	private int year;
 	private String title;
 	
-	private double averageRating = 0.0;
+	// Computed
+	private double bias = 0.0, averageRating = 0.0;
 	private int numberOfRatings = 0;
 	
-	private int metascore;
-	private List<String> genres;
-
 	public Movie(int _index, int _year, String _title) {
 		this.index = _index;
 		this.year = _year;
@@ -37,8 +36,19 @@ public class Movie {
 	public double getAverageRating() {
 		return averageRating;
 	}
+	
+	public double getBias() {
+		return bias;
+	}
 
-	public void updateAverageRating(double update) {
-		averageRating += ((update - averageRating) / ++numberOfRatings);
+	public void setBias(double bias) {
+		this.bias = bias;
+	}
+
+	public void updateBiasAndAverage(double update, double movieMean) {
+		++numberOfRatings;
+		
+		averageRating += ((update - averageRating) / numberOfRatings);
+		bias += ((update - movieMean) - bias) / numberOfRatings;
 	}
 }

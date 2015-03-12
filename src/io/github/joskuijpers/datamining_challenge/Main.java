@@ -1,13 +1,12 @@
 package io.github.joskuijpers.datamining_challenge;
 
-import io.github.joskuijpers.datamining_challenge.model.MovieList;
-import io.github.joskuijpers.datamining_challenge.model.Rating;
-import io.github.joskuijpers.datamining_challenge.model.RatingList;
-import io.github.joskuijpers.datamining_challenge.model.UserList;
+import io.github.joskuijpers.datamining_challenge.model.*;
+import io.github.joskuijpers.datamining_challenge.tiers.*;
 
 import java.util.Locale;
 
 public class Main {
+
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.US);
 		// Create user list, movie list, and list of ratings
@@ -30,42 +29,36 @@ public class Main {
 		predRatings.writeResultsFile("submission.csv");
 	}
 
+	/**
+	 * Calculate the ratings.
+	 * 
+	 * @param userList
+	 * @param movieList
+	 * @param ratingList
+	 * @param predRatings
+	 * @return
+	 */
 	public static RatingList predictRatings(UserList userList,
 			MovieList movieList, RatingList ratingList, RatingList predRatings) {
 
+		// Initial tier data
+		TierData tierData = new TierData(userList, movieList, ratingList,
+				predRatings);
+		
 		// Compute mean of ratings
-				double mean = ratingList.get(0).getRating();
-				for (int i = 1; i < ratingList.size(); i++) {
-					mean = ((double) i / ((double) i + 1.0)) * mean
-							+ (1.0 / ((double) i + 1.0))
-							* ratingList.get(i).getRating();
-		
-		
-		// Bereken van elke film de gemiddelde rating
-		for (Rating rating : ratingList) {
-			rating.getMovie().updateAverageRating(rating.getRating());
-		}
+		tierData = MovieMeanTier.run(tierData);
 
-		// Bereken de bias voor elke gebruiker
-		for (Rating rating : ratingList) {
-			rating.getUser().updateBias(rating.getRating(),
-					rating.getMovie().getAverageRating());
-		}
+		// Calculate the bias and average for every movie
+		tierData = MovieBiasTier.run(tierData);
+
+		// Calculate the bias for every user
+		tierData = UserBiasTier.run(tierData);
 
 		// Predict with average per movie and bias per user.
-		for (Rating predRating : predRatings) {
-			Double rating;
-
-			rating = predRating.getMovie().getAverageRating()
-					+ predRating.getUser().getBias();
-
-			rating = Math.max(Math.min(5.0, rating), 0.0);
-
-			predRating.setRating(rating);
-		}
+		tierData = PredictTier.run(tierData);
 
 		// Return predictions
-		return predRatings;
+		return tierData.getPredRatings();
 	}
 
 }

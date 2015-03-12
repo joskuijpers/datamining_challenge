@@ -1,9 +1,14 @@
 package io.github.joskuijpers.datamining_challenge.model;
 
 public class User {
-	private int index, age, profession;
+	private int index;
+	
+	// Factors
+	private int age, profession;
 	private boolean male;
-	private double bias = 0.0;
+	
+	// Computed
+	private double bias = 0.0, averageRating = 0.0;
 	private int numberOfRatings = 0;
 
 	public User(int _index, boolean _male, int _age, int _profession) {
@@ -33,6 +38,10 @@ public class User {
 		return numberOfRatings;
 	}
 	
+	public double getAverageRating() {
+		return averageRating;
+	}
+	
 	public double getBias() {
 		return bias;
 	}
@@ -41,7 +50,10 @@ public class User {
 		this.bias = bias;
 	}
 
-	public void updateBias(double update, double movieAverage) {
-		bias += ((update - movieAverage) - bias) / ++numberOfRatings;
+	public void updateBiasAndAverage(double update, double movieAverage) {
+		++numberOfRatings;
+		
+		averageRating += ((update - averageRating) / numberOfRatings);
+		bias += ((update - movieAverage) - bias) / numberOfRatings;
 	}
 }
