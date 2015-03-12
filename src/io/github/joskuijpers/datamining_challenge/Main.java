@@ -33,6 +33,14 @@ public class Main {
 	public static RatingList predictRatings(UserList userList,
 			MovieList movieList, RatingList ratingList, RatingList predRatings) {
 
+		// Compute mean of ratings
+				double mean = ratingList.get(0).getRating();
+				for (int i = 1; i < ratingList.size(); i++) {
+					mean = ((double) i / ((double) i + 1.0)) * mean
+							+ (1.0 / ((double) i + 1.0))
+							* ratingList.get(i).getRating();
+		
+		
 		// Bereken van elke film de gemiddelde rating
 		for (Rating rating : ratingList) {
 			rating.getMovie().updateAverageRating(rating.getRating());
