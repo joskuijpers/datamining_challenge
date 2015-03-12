@@ -1,7 +1,6 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
-import io.github.joskuijpers.datamining_challenge.model.Rating;
 
 /**
  * Tier for calculating the mean of all the movies.
