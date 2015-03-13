@@ -3,15 +3,15 @@ package io.github.joskuijpers.datamining_challenge.model;
 public class Rating {
 	private User user;
 	private Movie movie;
-	private double rating;
+	private float rating;
 
 	public Rating(User _user, Movie _movie, int _rating) {
 		this.user = _user;
 		this.movie = _movie;
-		this.rating = (double) _rating;
+		this.rating = (float) _rating;
 	}
 
-	public Rating(User _user, Movie _movie, double _rating) {
+	public Rating(User _user, Movie _movie, float _rating) {
 		this.user = _user;
 		this.movie = _movie;
 		this.rating = _rating;
@@ -25,11 +25,11 @@ public class Rating {
 		return movie;
 	}
 
-	public double getRating() {
+	public float getRating() {
 		return rating;
 	}
 
-	public void setRating(double _rating) {
+	public void setRating(float _rating) {
 		this.rating = _rating;
 	}
 }

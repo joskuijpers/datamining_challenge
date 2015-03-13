@@ -54,6 +54,9 @@ public class Main {
 		// Calculate the bias for every user
 		tierData = UserBiasTier.run(tierData);
 
+		// Compute the LFM matrices
+		tierData = LatentFactorModelTier.run(tierData);
+		
 		// Predict with average per movie and bias per user.
 		tierData = PredictTier.run(tierData);
 

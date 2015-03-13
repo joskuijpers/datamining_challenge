@@ -1,5 +1,6 @@
 package io.github.joskuijpers.datamining_challenge;
 
+import io.github.joskuijpers.datamining_challenge.math.Matrix;
 import io.github.joskuijpers.datamining_challenge.model.*;
 
 /**
@@ -8,12 +9,16 @@ import io.github.joskuijpers.datamining_challenge.model.*;
  * @author joskuijpers
  */
 public class TierData {
-
+	// Storage
 	private UserList userList;
 	private MovieList movieList;
 	private RatingList ratingList, predRatings;
 	
-	private double movieMean;
+	// MovieMeanTier
+	private float movieMean;
+	
+	// LatentFactorModel
+	private Matrix movieFactorMatrix, factorUserMatrix;
 	
 	public TierData(UserList userList, MovieList movieList,
 			RatingList ratingList, RatingList predRatings) {
@@ -55,11 +60,27 @@ public class TierData {
 		this.ratingList = ratingList;
 	}
 
-	public double getMovieMean() {
+	public float getMovieMean() {
 		return movieMean;
 	}
 
-	public void setMovieMean(double movieMean) {
+	public void setMovieMean(float movieMean) {
 		this.movieMean = movieMean;
+	}
+
+	public Matrix getMovieFactorMatrix() {
+		return movieFactorMatrix;
+	}
+
+	public void setMovieFactorMatrix(Matrix movieFactorMatrix) {
+		this.movieFactorMatrix = movieFactorMatrix;
+	}
+
+	public Matrix getFactorUserMatrix() {
+		return factorUserMatrix;
+	}
+
+	public void setFactorUserMatrix(Matrix factorUserMatrix) {
+		this.factorUserMatrix = factorUserMatrix;
 	}
 }

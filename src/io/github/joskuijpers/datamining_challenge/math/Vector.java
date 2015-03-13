@@ -6,7 +6,7 @@ package io.github.joskuijpers.datamining_challenge.math;
  * @author joskuijpers
  */
 public class Vector {
-	private Float[] elements;
+	float[] elements;
 	private int n;
 
 	/**
@@ -15,8 +15,24 @@ public class Vector {
 	 * @param n number of rows
 	 */
 	public Vector(int n) {
+		if(n < 1)
+			throw new IllegalArgumentException();
+		
 		this.n = n;
-		this.elements = new Float[n];
+		this.elements = new float[n];
+	}
+	
+	/**
+	 * Create a new vector with n rows and given data.
+	 * 
+	 * Data is cloned.
+	 * 
+	 * @param n number of rows
+	 * @param elements
+	 */
+	Vector(int n, float[] elements) {
+		this.n = n;
+		this.elements = elements.clone();
 	}
 
 	/**
@@ -24,7 +40,7 @@ public class Vector {
 	 *
 	 * @return number of rows
 	 */
-	public int getNumberOfRows() {
+	public int size() {
 		return n;
 	}
 
@@ -47,7 +63,7 @@ public class Vector {
 	 * @param n Row
 	 * @return value
 	 */
-	public void set(int n, Float value) {
+	public void set(int n, float value) {
 		if(n < 0 || n >= this.n)
 			throw new IllegalArgumentException();
 
@@ -61,13 +77,13 @@ public class Vector {
 	 * @return A new Vector object
 	 */
 	public Vector add(Vector other) {
-		if(n != other.n)
+		if(other == null || n != other.n)
 			throw new IllegalArgumentException();
 
 		Vector v = this.clone();
 
 		for(int i = 0; i < n; ++i)
-			v.elements[i] = v.elements[i] + other.elements[i];
+			v.elements[i] = elements[i] + other.elements[i];
 
 		return v;
 	}
@@ -78,11 +94,11 @@ public class Vector {
 	 * @param scalar
 	 * @return A new Vector object
 	 */
-	public Vector add(Float scalar) {
+	public Vector add(float scalar) {
 		Vector v = this.clone();
 
 		for(int i = 0; i < n; ++i)
-			v.elements[i] = v.elements[i] + scalar;
+			v.elements[i] = elements[i] + scalar;
 
 		return v;
 	}
@@ -94,13 +110,13 @@ public class Vector {
 	 * @return A new Vector object
 	 */
 	public Vector subtract(Vector other) {
-		if(n != other.n)
+		if(other == null || n != other.n)
 			throw new IllegalArgumentException();
 
 		Vector v = this.clone();
 
 		for(int i = 0; i < n; ++i)
-			v.elements[i] = v.elements[i] - other.elements[i];
+			v.elements[i] = elements[i] - other.elements[i];
 
 		return v;
 	}
@@ -111,7 +127,7 @@ public class Vector {
 	 * @param scalar
 	 * @return A new Vector object
 	 */
-	public Vector subtract(Float scalar) {
+	public Vector subtract(float scalar) {
 		return this.add(-scalar);
 	}
 
@@ -121,13 +137,30 @@ public class Vector {
 	 * @param scalar
 	 * @return A new Vector object
 	 */
-	public Vector multiply(Float scalar) {
+	public Vector multiply(float scalar) {
 		Vector v = this.clone();
 
 		for(int i = 0; i < n; ++i)
-			v.elements[i] = v.elements[i] * scalar;
+			v.elements[i] = elements[i] * scalar;
 
 		return v;
+	}
+	
+	/**
+	 * Compute the dotproduct of two vectors. 
+	 * 
+	 * @param other the other vector
+	 * @return
+	 */
+	public float dotproduct(Vector other) {
+		if(other == null || n != other.n)
+			throw new IllegalArgumentException();
+		
+		float in = 0.0f;
+		for(int i = 0; i < n; ++i)
+			in += this.elements[i] + other.elements[i];
+		
+		return in;
 	}
 
 	@Override
@@ -135,5 +168,15 @@ public class Vector {
 		Vector v = new Vector(n);
 		v.elements = elements.clone();
 		return v;
+	}
+	
+	@Override
+	public String toString() {
+		String str = "< "+elements[0];
+
+		for(int i = 1; i < n; ++i)
+			str += ", "+elements[i];
+		
+		return str + " >";
 	}
 }

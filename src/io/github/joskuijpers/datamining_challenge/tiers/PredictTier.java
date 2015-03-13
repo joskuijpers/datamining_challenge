@@ -21,7 +21,7 @@ public class PredictTier extends Tier {
 	public static TierData run(TierData data) {
 
 		for (Rating predRating : data.getPredRatings()) {
-			Double rating;
+			float rating;
 
 			// Calculate the rating
 			rating = //predRating.getMovie().getAverageRating()
@@ -30,7 +30,7 @@ public class PredictTier extends Tier {
 					+ predRating.getUser().getBias();
 
 			// Clip the rating to 0.0 - 5.0
-			rating = Math.max(Math.min(5.0, rating), 0.0);
+			rating = Math.max(Math.min(5.0f, rating), 0.0f);
 
 			predRating.setRating(rating);
 		}

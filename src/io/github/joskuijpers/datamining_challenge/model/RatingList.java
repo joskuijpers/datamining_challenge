@@ -21,12 +21,12 @@ public class RatingList extends ArrayList<Rating> {
 					add(new Rating(
 							userList.get(Integer.parseInt(ratingData[0]) - 1),
 							movieList.get(Integer.parseInt(ratingData[1]) - 1),
-							Double.parseDouble(ratingData[2])));
+							Float.parseFloat(ratingData[2])));
 				} else {
 					add(new Rating(
 							userList.get(Integer.parseInt(ratingData[0]) - 1),
 							movieList.get(Integer.parseInt(ratingData[1]) - 1),
-							0.0));
+							0.0f));
 				}
 			}
 		} catch (Exception e) {
