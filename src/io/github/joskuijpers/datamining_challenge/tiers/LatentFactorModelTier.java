@@ -46,7 +46,6 @@ public class LatentFactorModelTier extends Tier {
 		// Factors: age, profession, male/female (in Movie)
 		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
-		// length against overfitting
 
 		return data;
 	}
