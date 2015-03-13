@@ -39,7 +39,7 @@ public class LatentFactorModelTier extends Tier {
 		data.setFactorUserMatrix(userMatrix);
 		data.setMovieFactorMatrix(movieMatrix);
 
-		// Initialize matrices using the average of all the ratings ('non blanks')
+		/// Initialize matrices using the average of all the ratings ('non blanks')
 
 		/////// Singular Value Decomposition => Alternating least squares
 
