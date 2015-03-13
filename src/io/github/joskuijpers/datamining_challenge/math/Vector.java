@@ -17,16 +17,16 @@ public class Vector {
 	public Vector(int n) {
 		if(n < 1)
 			throw new IllegalArgumentException();
-		
+
 		this.n = n;
 		this.elements = new float[n];
 	}
-	
+
 	/**
 	 * Create a new vector with n rows and given data.
-	 * 
+	 *
 	 * Data is cloned.
-	 * 
+	 *
 	 * @param n number of rows
 	 * @param elements
 	 */
@@ -145,21 +145,21 @@ public class Vector {
 
 		return v;
 	}
-	
+
 	/**
-	 * Compute the dotproduct of two vectors. 
-	 * 
+	 * Compute the dotproduct of two vectors.
+	 *
 	 * @param other the other vector
 	 * @return
 	 */
 	public float dotproduct(Vector other) {
 		if(other == null || n != other.n)
 			throw new IllegalArgumentException();
-		
+
 		float in = 0.0f;
 		for(int i = 0; i < n; ++i)
 			in += this.elements[i] + other.elements[i];
-		
+
 		return in;
 	}
 
@@ -169,14 +169,14 @@ public class Vector {
 		v.elements = elements.clone();
 		return v;
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "< "+elements[0];
 
 		for(int i = 1; i < n; ++i)
 			str += ", "+elements[i];
-		
+
 		return str + " >";
 	}
 }

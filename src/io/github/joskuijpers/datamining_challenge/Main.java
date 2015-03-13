@@ -31,7 +31,7 @@ public class Main {
 
 	/**
 	 * Calculate the ratings.
-	 * 
+	 *
 	 * @param userList
 	 * @param movieList
 	 * @param ratingList
@@ -44,7 +44,7 @@ public class Main {
 		// Initial tier data
 		TierData tierData = new TierData(userList, movieList, ratingList,
 				predRatings);
-		
+
 		// Compute mean of ratings
 		tierData = MovieMeanTier.run(tierData);
 
@@ -56,7 +56,7 @@ public class Main {
 
 		// Compute the LFM matrices
 		tierData = LatentFactorModelTier.run(tierData);
-		
+
 		// Predict with average per movie and bias per user.
 		tierData = PredictTier.run(tierData);
 

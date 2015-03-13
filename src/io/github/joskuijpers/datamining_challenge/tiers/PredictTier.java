@@ -6,7 +6,7 @@ import io.github.joskuijpers.datamining_challenge.model.Rating;
 
 /**
  * A tier calculating making the neccesary predictions.
- * 
+ *
  * @author joskuijpers
  */
 public class PredictTier extends Tier {
@@ -14,12 +14,12 @@ public class PredictTier extends Tier {
 	public static TierData run(TierData data) {
 		return runLFMBiased(data);
 	}
-	
+
 	/**
 	 * Calculate the predictions.
-	 * 
+	 *
 	 * Formula: Rating_mu = MovieMean + MoviaBias_m + UserBias_u
- 	 *  
+ 	 *
 	 * @param data
 	 * @return
 	 */
@@ -42,7 +42,7 @@ public class PredictTier extends Tier {
 
 		return data;
 	}
-	
+
 	private static TierData runLFMBiased(TierData data) {
 		for (Rating predRating : data.getPredRatings()) {
 			float rating;
@@ -50,7 +50,7 @@ public class PredictTier extends Tier {
 			// Calculate the rating
 			int userIndex = predRating.getUser().getIndex() - 1;
 			int movieIndex = predRating.getMovie().getIndex() - 1;
-			
+
 			Vector user = data.getFactorUserMatrix().getColumn(userIndex);
 			Vector movie = data.getMovieFactorMatrix().getRow(movieIndex);
 

@@ -13,14 +13,14 @@ public class Matrix {
 
 	/**
 	 * Create an empty matrix with mxn size.
-	 * 
+	 *
 	 * @param m Number of rows
 	 * @param n Number of columns
 	 */
 	public Matrix(int m, int n) {
 		if(n < 1 || m < 1)
 			throw new IllegalArgumentException();
-		
+
 		this.m = m;
 		this.n = n;
 
@@ -47,7 +47,7 @@ public class Matrix {
 
 	/**
 	 * Set all elements to specified value.
-	 * 
+	 *
 	 * @param value the value
 	 */
 	public void init(float value) {
@@ -57,7 +57,7 @@ public class Matrix {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get a value from the matrix.
 	 *
@@ -88,62 +88,62 @@ public class Matrix {
 
 	/**
 	 * Get the vector for specified column.
-	 * 
+	 *
 	 * @param n the column index
 	 * @return Vector
 	 */
 	public Vector getColumn(int n) {
 		if(n < 0 || n >= this.n)
 			throw new IllegalArgumentException();
-		
+
 		Vector v = new Vector(m);
 		for(int i = 0; i < m; ++i)
 			v.elements[i] = this.elements[i][n];
-		
+
 		return v;
 	}
-	
+
 	/**
 	 * Set the vector for specified column.
-	 * 
+	 *
 	 * @param n the column index
 	 * @param column the column
 	 */
 	public void setColumn(int n, Vector column) {
 		if(column == null || n < 0 || n >= this.n || column.size() != m)
 			throw new IllegalArgumentException();
-		
+
 		for(int i = 0; i < m; ++i)
 			this.elements[i][n] = column.elements[i];
 	}
-	
+
 	/**
 	 * Set the vector for specified row.
-	 * 
+	 *
 	 * @param m the row index
 	 * @return Vector
-	 */	
+	 */
 	public Vector getRow(int m) {
 		if(m < 0 || m >= this.m)
 			throw new IllegalArgumentException();
-		
+
 		return new Vector(n, elements[m]);
 	}
-	
+
 	/**
 	 * Set the vector for specified row.
-	 * 
+	 *
 	 * @param n the row index
 	 * @param row the row data
 	 */
 	public void setRow(int m, Vector row) {
 		if(row == null || m < 0 || n >= this.m || row.size() != this.n)
 			throw new IllegalArgumentException();
-		
+
 		for(int i = 0; i < n; ++i)
 			this.elements[m][i] = row.elements[i];
 	}
-	
+
 	@Override
 	public Matrix clone() {
 		Matrix m = new Matrix(this.m,this.n);

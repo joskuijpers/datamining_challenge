@@ -5,7 +5,7 @@ import io.github.joskuijpers.datamining_challenge.model.*;
 
 /**
  * A simple POJO for storing the intermediate tier data.
- * 
+ *
  * @author joskuijpers
  */
 public class TierData {
@@ -13,13 +13,13 @@ public class TierData {
 	private UserList userList;
 	private MovieList movieList;
 	private RatingList ratingList, predRatings;
-	
+
 	// MovieMeanTier
 	private float movieMean;
-	
+
 	// LatentFactorModel
 	private Matrix movieFactorMatrix, factorUserMatrix;
-	
+
 	public TierData(UserList userList, MovieList movieList,
 			RatingList ratingList, RatingList predRatings) {
 		this.setUserList(userList);
