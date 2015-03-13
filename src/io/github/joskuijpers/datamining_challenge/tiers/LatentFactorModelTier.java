@@ -19,7 +19,7 @@ public class LatentFactorModelTier extends Tier {
 	 */
 	public static TierData run(TierData data) {
 		Matrix inputMatrix, movieMatrix, userMatrix;
-		int numFactors = 3;
+		int numFactors = 10;
 
 		// Create matrix for input data
 		inputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
@@ -40,10 +40,15 @@ public class LatentFactorModelTier extends Tier {
 		data.setMovieFactorMatrix(movieMatrix);
 
 		// Initialize matrices using the average of all the ratings ('non blanks')
+
+		/////// Singular Value Decomposition => Alternating least squares
+
 		movieMatrix.init(data.getMovieMean());
 		userMatrix.init(data.getMovieMean());
+		// this.svd(inputMatrix, movieMatrix, userMatrix, numFactors);
 
-		// Factors: age, profession, male/female (in Movie)
+
+		// Calculate predictions
 		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
 
