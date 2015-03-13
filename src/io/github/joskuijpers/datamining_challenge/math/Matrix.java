@@ -46,6 +46,19 @@ public class Matrix {
 	}
 
 	/**
+	 * Set all elements to specified value.
+	 * 
+	 * @param value the value
+	 */
+	public void init(float value) {
+		for(int i = 0; i < m; ++i) {
+			for (int j = 0; j < n; ++j) {
+				elements[i][j] = value;
+			}
+		}
+	}
+	
+	/**
 	 * Get a value from the matrix.
 	 *
 	 * @param m Row

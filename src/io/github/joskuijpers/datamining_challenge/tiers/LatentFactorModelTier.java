@@ -18,7 +18,8 @@ public class LatentFactorModelTier extends Tier {
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-		Matrix inputMatrix;
+		Matrix inputMatrix, movieMatrix, userMatrix;
+		int numFactors = 3;
 
 		// Create matrix for input data
 		inputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
@@ -31,26 +32,22 @@ public class LatentFactorModelTier extends Tier {
 		}
 
 		// Factorize into two matrices
+		movieMatrix = new Matrix(inputMatrix.getNumberOfRows(),numFactors);
+		userMatrix = new Matrix(numFactors,inputMatrix.getNumberOfColumns());
+		
+		// Store in tier data
+		data.setFactorUserMatrix(userMatrix);
+		data.setMovieFactorMatrix(movieMatrix);
+		
+		// Initialize matrices using the average of all the ratings ('non blanks')
+		movieMatrix.init(data.getMovieMean());
+		userMatrix.init(data.getMovieMean());
+		
 		// Factors: age, profession, male/female (in Movie)
+		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
+		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
+		// length against overfitting
 
 		return data;
-	}
-
-	/**
-	 * Calculate the rating for a movie-user.
-	 * 
-	 * @param data
-	 *            The tier data
-	 * @param movieId
-	 *            The movie ID
-	 * @param userId
-	 *            The user ID
-	 * @return predicted rating
-	 */
-	public static float calculateRating(TierData data, int movieId, int userId) {
-		Vector user = data.getFactorUserMatrix().getColumn(userId - 1);
-		Vector movie = data.getMovieFactorMatrix().getRow(movieId - 1);
-
-		return movie.dotproduct(user);
 	}
 }
