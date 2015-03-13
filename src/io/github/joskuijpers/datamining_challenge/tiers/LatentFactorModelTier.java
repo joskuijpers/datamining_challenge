@@ -49,4 +49,40 @@ public class LatentFactorModelTier extends Tier {
 
 		return data;
 	}
+
+	/**
+	 * Computes the RMSE of this matrix, to the specified matrix,
+	 * using the SSE and the number of filled values.
+	 *
+	 * This assumes a matrix with original ratings from 1-5, where
+	 * 0 dictates 'no rating'.
+	 *
+	 * TODO: ADD BIASES
+	 *
+	 * @param original the original matrix to compare to
+	 * @return the sum
+	 */
+	public static double rmse(Matrix original, Matrix toTest, TierData data) {
+		if (original == null || toTest == null
+				|| original.n != toTest.n || original.m != toTest.m)
+			throw new IllegalArgumentException();
+
+		double sse = 0.0;
+		int numFilled = 0;
+
+		for (int i = 0; i < original.m; ++i) {
+			for (int j = 0; j < original.n; ++j) {
+				// Skip where in original matrix there is no rating
+				if(original.elements[i][j] == 0)
+					continue;
+
+				float x = original.elements[i][j] - toTest.elements[i][j];
+
+				sse += x*x;
+				++numFilled;
+			}
+		}
+
+		return Math.sqrt(sse/(double)numFilled);
+	}
 }

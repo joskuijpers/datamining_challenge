@@ -30,7 +30,10 @@ public class Vector {
 	 * @param n number of rows
 	 * @param elements
 	 */
-	Vector(int n, float[] elements) {
+	public Vector(int n, float[] elements) {
+		if(n < 1 || elements.length != n)
+			throw new IllegalArgumentException();
+
 		this.n = n;
 		this.elements = elements.clone();
 	}

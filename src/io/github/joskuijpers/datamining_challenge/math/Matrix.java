@@ -8,8 +8,8 @@ package io.github.joskuijpers.datamining_challenge.math;
  * @author joskuijpers
  */
 public class Matrix {
-	private float[][] elements;
-	private int m, n;
+	public float[][] elements;
+	public int m, n;
 
 	/**
 	 * Create an empty matrix with mxn size.
@@ -27,6 +27,24 @@ public class Matrix {
 		this.n = n;
 
 		this.elements = new float[m][n];
+	}
+
+	/**
+	 * Create a new matrix with m rows, m columns, and given data.
+	 *
+	 * Data is cloned.
+	 *
+	 * @param m number of rows
+	 * @param n number of columns
+	 * @param elements
+	 */
+	public Matrix(int m, int n, float[][] elements) {
+		if(m < 1 || n < 1 || elements.length != m || elements[0].length != n)
+			throw new IllegalArgumentException();
+
+		this.m = m;
+		this.n = n;
+		this.elements = elements.clone();
 	}
 
 	/**
@@ -159,9 +177,9 @@ public class Matrix {
 
 	/**
 	 * Substract a matrix from this one.
-	 * 
+	 *
 	 * Cloned. Original is not changed.
-	 * 
+	 *
 	 * @param other
 	 *            Matrix to subtract
 	 * @return A cloned matrix with the result
@@ -179,6 +197,50 @@ public class Matrix {
 		}
 
 		return mat;
+	}
+
+	/**
+	 * Add a matrix to this one.
+	 *
+	 * Cloned. Original is not changed.
+	 *
+	 * @param other
+	 *            Matrix to add
+	 * @return A cloned matrix with the result
+	 */
+	public Matrix add(Matrix other) {
+		if (other == null || other.n != n || other.m != m)
+			throw new IllegalArgumentException();
+
+		Matrix mat = new Matrix(m, n);
+
+		for (int i = 0; i < m; ++i) {
+			for (int j = 0; j < n; ++j) {
+				mat.elements[i][j] = this.elements[i][j] + other.elements[i][j];
+			}
+		}
+
+		return mat;
+	}
+
+	/**
+	 * Add a matrix to this one.
+	 *
+	 * @param other
+	 *            Matrix to add
+	 * @return A cloned matrix with the result
+	 */
+	public Matrix addNoClone(Matrix other) {
+		if (other == null || other.n != n || other.m != m)
+			throw new IllegalArgumentException();
+
+		for (int i = 0; i < m; ++i) {
+			for (int j = 0; j < n; ++j) {
+				this.elements[i][j] += other.elements[i][j];
+			}
+		}
+
+		return this;
 	}
 
 	@Override

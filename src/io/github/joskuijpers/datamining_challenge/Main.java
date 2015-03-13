@@ -1,5 +1,6 @@
 package io.github.joskuijpers.datamining_challenge;
 
+import io.github.joskuijpers.datamining_challenge.math.Matrix;
 import io.github.joskuijpers.datamining_challenge.model.*;
 import io.github.joskuijpers.datamining_challenge.tiers.*;
 
@@ -40,6 +41,12 @@ public class Main {
 	 */
 	public static RatingList predictRatings(UserList userList,
 			MovieList movieList, RatingList ratingList, RatingList predRatings) {
+
+		Matrix original = new Matrix(5,5,new float[][]{{5f,2f,4f,4f,3f},{3f,1f,2f,4f,1f},{2f,0f,3f,1f,4f},{2f,5f,4f,3f,5f},{4f,4f,5f,4f,0f}});
+		Matrix twos = new Matrix(5,5);
+		twos.init(2f);
+		double rmse = twos.rmse(original);
+		System.out.println(rmse);
 
 		// Initial tier data
 		TierData tierData = new TierData(userList, movieList, ratingList,
