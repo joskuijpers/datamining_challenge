@@ -9,10 +9,12 @@ import io.github.joskuijpers.datamining_challenge.model.Rating;
  *
  * @author joskuijpers
  */
+@SuppressWarnings("unused")
 public class PredictTier extends Tier {
 
 	public static TierData run(TierData data) {
-		return runLFMBiased(data);
+//		return runLFMBiased(data);
+		return runBiases(data);
 	}
 
 	/**
@@ -23,7 +25,6 @@ public class PredictTier extends Tier {
 	 * @param data
 	 * @return
 	 */
-	@SuppressWarnings("unused")
 	private static TierData runBiases(TierData data) {
 		for (Rating predRating : data.getPredRatings()) {
 			float rating;

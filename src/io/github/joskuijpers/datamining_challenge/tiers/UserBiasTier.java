@@ -1,7 +1,7 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
-import io.github.joskuijpers.datamining_challenge.model.Rating;
+import io.github.joskuijpers.datamining_challenge.model.*;
 
 /**
  * A tier calculating the user bias.
@@ -26,6 +26,12 @@ public class UserBiasTier extends Tier {
 		for (Rating rating : data.getRatingList()) {
 			rating.getUser().updateBiasAndAverage(rating.getRating(),
 					rating.getMovie().getAverageRating());
+		}
+
+		// For users with no rating, set the mean
+		for(User user : data.getUserList()) {
+			if(user.getAverageRating() == 0.0f)
+				user.setAverageRating(data.getMovieMean());
 		}
 
 		return data;

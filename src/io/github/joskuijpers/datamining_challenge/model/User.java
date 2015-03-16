@@ -42,6 +42,10 @@ public class User {
 		return averageRating;
 	}
 
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
+
 	public float getBias() {
 		return bias;
 	}
@@ -50,10 +54,10 @@ public class User {
 		this.bias = bias;
 	}
 
-	public void updateBiasAndAverage(float update, float movieAverage) {
+	public void updateBiasAndAverage(float update, float movieMean) {
 		++numberOfRatings;
 
 		averageRating += ((update - averageRating) / numberOfRatings);
-		bias += ((update - movieAverage) - bias) / numberOfRatings;
+		bias += ((update - movieMean) - bias) / numberOfRatings;
 	}
 }

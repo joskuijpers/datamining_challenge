@@ -37,14 +37,14 @@ public class Movie {
 		return averageRating;
 	}
 
+	public void setAverageRating(float averageRating) {
+		this.averageRating = averageRating;
+	}
+
 	public float getBias() {
 		return bias;
 	}
-
-	public void setBias(float bias) {
-		this.bias = bias;
-	}
-
+	
 	public void updateBiasAndAverage(float update, float movieMean) {
 		++numberOfRatings;
 

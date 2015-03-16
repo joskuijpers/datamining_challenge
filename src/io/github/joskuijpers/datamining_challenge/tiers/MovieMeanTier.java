@@ -19,8 +19,10 @@ public class MovieMeanTier extends Tier {
 
 		float movieMean = data.getRatingList().get(0).getRating();
 		for (int i = 1; i < data.getRatingList().size(); i++) {
-			movieMean = ((float) i / ((float) i + 1.0f)) * movieMean
-					+ (1.0f / ((float) i + 1.0f))
+			float f = (float)i;
+			
+			movieMean = (f / (f + 1.0f)) * movieMean
+					+ (1.0f / (f + 1.0f))
 					* data.getRatingList().get(i).getRating();
 		}
 
