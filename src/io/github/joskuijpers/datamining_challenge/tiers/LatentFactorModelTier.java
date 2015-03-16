@@ -47,18 +47,17 @@ public class LatentFactorModelTier extends Tier {
 		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
 
-		Matrix eye = Matrix.eye(numFactors);
-		float lambda = 1.0f;
-
+		
+		/*
+		 
+		  Two matrices with all initialized to MU
+		  Take 1 element from 1 matrix, call it X
+		  Algebra the product of the matrices with the unknown
+		  
+		  
+		 */
+		
 		for(int iter = 0; iter < 10; ++iter) {
-
-			//X = np.linalg.solve(np.dot(Y, Y.T) + lambda_ * np.eye(n_factors),
-            //        np.dot(Y, Q.T)).T
-            //Y = np.linalg.solve(np.dot(X.T, X) + lambda_ * np.eye(n_factors),
-            //        np.dot(X.T, Q))
-
-//			userMatrix.dotProduct(userMatrix.transpose()) + eye.multiply(lambda)
-//			userMatrix.dotProduct(inputMatrix.transpose()).transpose()
 
 
 			double error = rmse(inputMatrix, movieMatrix, userMatrix, data);
