@@ -49,26 +49,26 @@ public class LatentFactorModelTier extends Tier {
 
 		Matrix eye = Matrix.eye(numFactors);
 		float lambda = 1.0f;
-		
+
 		for(int iter = 0; iter < 10; ++iter) {
-			
-			//X = np.linalg.solve(np.dot(Y, Y.T) + lambda_ * np.eye(n_factors), 
+
+			//X = np.linalg.solve(np.dot(Y, Y.T) + lambda_ * np.eye(n_factors),
             //        np.dot(Y, Q.T)).T
             //Y = np.linalg.solve(np.dot(X.T, X) + lambda_ * np.eye(n_factors),
             //        np.dot(X.T, Q))
 
 //			userMatrix.dotProduct(userMatrix.transpose()) + eye.multiply(lambda)
 //			userMatrix.dotProduct(inputMatrix.transpose()).transpose()
-					
-			
+
+
 			double error = rmse(inputMatrix, movieMatrix, userMatrix, data);
 			System.out.println("Error for iter "+iter+": "+error);
 		}
-		
-		
+
+
 		return data;
 	}
-	
+
 	/**
 	 * Computes the RMSE of this matrix, to the specified matrix,
 	 * using the SSE and the number of filled values.
@@ -87,11 +87,11 @@ public class LatentFactorModelTier extends Tier {
 
 		// Create the test matrix
 		Matrix testMatrix = movieMatrix.multiply(userMatrix);
-		
+
 		return rmse(original, testMatrix, data);
 	}
 
-	
+
 	public static double rmse(Matrix original, Matrix toTest, TierData data) {
 		if (original == null || toTest == null
 				|| original.n != toTest.n || original.m != toTest.m)
