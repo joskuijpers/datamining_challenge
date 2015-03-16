@@ -40,21 +40,35 @@ public class LatentFactorModelTier extends Tier {
 		data.setMovieFactorMatrix(movieMatrix);
 
 		/// Initialize matrices using the average of all the ratings ('non blanks')
-
-		/////// Singular Value Decomposition => Alternating least squares
-
-		movieMatrix.init(data.getMovieMean());
-		userMatrix.init(data.getMovieMean());
-		// this.svd(inputMatrix, movieMatrix, userMatrix, numFactors);
-
+		movieMatrix.init(data.getMovieMean());	// X
+		userMatrix.init(data.getMovieMean());	// Y
 
 		// Calculate predictions
 		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
 
+		Matrix eye = Matrix.eye(numFactors);
+		float lambda = 1.0f;
+		
+		for(int iter = 0; iter < 10; ++iter) {
+			
+			//X = np.linalg.solve(np.dot(Y, Y.T) + lambda_ * np.eye(n_factors), 
+            //        np.dot(Y, Q.T)).T
+            //Y = np.linalg.solve(np.dot(X.T, X) + lambda_ * np.eye(n_factors),
+            //        np.dot(X.T, Q))
+
+//			userMatrix.dotProduct(userMatrix.transpose()) + eye.multiply(lambda)
+//			userMatrix.dotProduct(inputMatrix.transpose()).transpose()
+					
+			
+			double error = rmse(inputMatrix, movieMatrix, userMatrix, data);
+			System.out.println("Error for iter "+iter+": "+error);
+		}
+		
+		
 		return data;
 	}
-
+	
 	/**
 	 * Computes the RMSE of this matrix, to the specified matrix,
 	 * using the SSE and the number of filled values.
@@ -67,6 +81,17 @@ public class LatentFactorModelTier extends Tier {
 	 * @param original the original matrix to compare to
 	 * @return the sum
 	 */
+	private static double rmse(Matrix original, Matrix movieMatrix, Matrix userMatrix, TierData data) {
+		if (original == null || movieMatrix == null || userMatrix == null)
+			throw new IllegalArgumentException();
+
+		// Create the test matrix
+		Matrix testMatrix = movieMatrix.multiply(userMatrix);
+		
+		return rmse(original, testMatrix, data);
+	}
+
+	
 	public static double rmse(Matrix original, Matrix toTest, TierData data) {
 		if (original == null || toTest == null
 				|| original.n != toTest.n || original.m != toTest.m)

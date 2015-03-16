@@ -46,6 +46,27 @@ public class Matrix {
 		this.n = n;
 		this.elements = elements.clone();
 	}
+	
+	/**
+	 * Create an I matrix with given size.
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public static Matrix eye(int n) {
+		if(n < 1)
+			throw new IllegalArgumentException();
+		
+		Matrix mat = new Matrix(n,n);
+		
+		for(int i = 0; i < n; ++i) {
+			for(int j = 0; j < n; ++j) {
+				mat.elements[i][j] = 1;
+			}
+		}
+		
+		return mat;
+	}
 
 	/**
 	 * Get the number of rows in the vector.
@@ -241,6 +262,64 @@ public class Matrix {
 		}
 
 		return this;
+	}
+	
+	/**
+	 * Multiply a matrix with another matrix.
+	 * 
+	 * mxp * pxn = mxn
+	 * 
+	 * @param other matrix to multiply with
+	 * @return a new Matrix
+	 */
+	public Matrix multiply(Matrix other) {
+		if(other == null || this.n != other.m)
+			throw new IllegalArgumentException();
+		
+		Matrix ret = new Matrix(this.m,other.n);
+		
+		for(int i = 0; i < this.m; ++i) {
+			for(int j = 0; j < other.n; ++j) { 
+				ret.elements[i][j] = this.getRow(i).dotproduct(other.getColumn(j));
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Multiply elementes with a scalar.
+	 * 
+	 * @param scalar
+	 * @return a new matrix
+	 */
+	public Matrix multiply(float scalar) {
+		Matrix ret = this.clone();
+		
+		for(int i = 0; i < this.m; ++i) {
+			for(int j = 0; j < this.n; ++j) {
+				ret.elements[i][j] *= scalar;
+			}
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * Transpose the matrix.
+	 * 
+	 * @return transposed matrix
+	 */
+	public Matrix transpose() {
+		Matrix mat = new Matrix(this.n,this.n);
+		
+		for(int i = 0; i < this.m; ++i) {
+			for(int j = 0; j < this.n; ++j) {
+				mat.elements[j][i] = elements[i][j];
+			}
+		}
+		
+		return mat;
 	}
 
 	@Override
