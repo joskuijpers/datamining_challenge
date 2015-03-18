@@ -89,19 +89,12 @@ public class PredictTier extends Tier {
 			float noemer = 0.0f;
 			for(int i=0; i<userColumn.size();++i){
 				if(userColumn.get(i)>0.0){
-					teller += (userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i))*data.getCountMatrix().get(movieIndex, i);
+					if(!data.getDiffMatrix().get(movieIndex, i).isNaN()){
+					teller += (userColumn.get(i)+data.getDiffMatrix().get(i,movieIndex))*data.getCountMatrix().get(i,movieIndex);
 					noemer += data.getCountMatrix().get(movieIndex, i);
-//					if(userIndex==449||userIndex==550||userIndex==551){
-//						System.out.println("Usercolum: "+userColumn.get(i)+" getdiff: "+data.getDiffMatrix().get(movieIndex, i)+"getcount: "+data.getCountMatrix().get(movieIndex, i));
-//						System.out.println("teller " +teller+ " noemer "+ noemer);
-//					}
+					}
 				}
 			}
-//			if(userIndex==449||userIndex==550||userIndex==551){
-//			System.out.println("userIndex " + userIndex);
-//			System.out.println(teller);
-//			System.out.println(noemer);
-//			System.out.println(teller/noemer);}
 			
 			
 			// Calculate the rating
@@ -117,11 +110,11 @@ public class PredictTier extends Tier {
 						teller += (userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i))*data.getCountMatrix().get(movieIndex, i);
 						noemer += data.getCountMatrix().get(movieIndex, i);
 						System.out.println("Usercolum: "+userColumn.get(i)+" getdiff: "+data.getDiffMatrix().get(movieIndex, i)+"getcount: "+data.getCountMatrix().get(movieIndex, i));
+					}
 				}
-			break;
+				System.out.println(data.getUserList().get(userIndex).getNumberOfRatings());
+				rating = data.getMovieMean();
 			}
-			System.out.println(data.getUserList().get(userIndex).getNumberOfRatings());
-				rating = data.getMovieMean();}
 
 			// Clip the rating to 0.0 - 5.0
 			rating = Math.max(Math.min(5.0f, rating), 0.0f);
