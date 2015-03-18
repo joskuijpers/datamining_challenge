@@ -67,9 +67,9 @@ public class PredictTier extends Tier {
 		return data;
 	}
 	
-	private static TierData runCF(TierData data){
+	public static TierData runCF(TierData data){
 		for(Rating predRating : data.getPredRatings()){
-			
+			Float rating = 0.0f;
 			
 			//Hierna moet de predictratings matrix gevuld worden. 
 			//De formule die hier voor gebruikt wordt is,
@@ -80,23 +80,56 @@ public class PredictTier extends Tier {
 			
 			// Calculate the rating
 			int userIndex = predRating.getUser().getIndex() - 1;
+			//System.out.println("userIndex: " + userIndex);
 			int movieIndex = predRating.getMovie().getIndex() - 1;
 			
 			Vector userColumn = data.getImputMatrix().getColumn(userIndex);
 			
 			float teller = 0.0f;
 			float noemer = 0.0f;
-			
 			for(int i=0; i<userColumn.size();++i){
 				if(userColumn.get(i)>0.0){
-					teller += userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i)*data.getCountMatrix().get(movieIndex, i);
+					teller += (userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i))*data.getCountMatrix().get(movieIndex, i);
 					noemer += data.getCountMatrix().get(movieIndex, i);
+//					if(userIndex==449||userIndex==550||userIndex==551){
+//						System.out.println("Usercolum: "+userColumn.get(i)+" getdiff: "+data.getDiffMatrix().get(movieIndex, i)+"getcount: "+data.getCountMatrix().get(movieIndex, i));
+//						System.out.println("teller " +teller+ " noemer "+ noemer);
+//					}
 				}
 			}
+//			if(userIndex==449||userIndex==550||userIndex==551){
+//			System.out.println("userIndex " + userIndex);
+//			System.out.println(teller);
+//			System.out.println(noemer);
+//			System.out.println(teller/noemer);}
 			
-			predRating.setRating(teller/noemer);
+			
+			// Calculate the rating
+			rating = teller/noemer;
+			
+			if(rating.isNaN()){			
+				System.out.println("userIndex " + userIndex);
+				System.out.println(teller);
+				System.out.println(noemer);
+				System.out.println(teller/noemer);
+				for(int i=0; i<userColumn.size();++i){
+					if(userColumn.get(i)>0.0){
+						teller += (userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i))*data.getCountMatrix().get(movieIndex, i);
+						noemer += data.getCountMatrix().get(movieIndex, i);
+						System.out.println("Usercolum: "+userColumn.get(i)+" getdiff: "+data.getDiffMatrix().get(movieIndex, i)+"getcount: "+data.getCountMatrix().get(movieIndex, i));
+				}
+			break;
+			}
+			System.out.println(data.getUserList().get(userIndex).getNumberOfRatings());
+				rating = data.getMovieMean();}
+
+			// Clip the rating to 0.0 - 5.0
+			rating = Math.max(Math.min(5.0f, rating), 0.0f);
+			predRating.setRating(rating);
 			
 		}
+		
+		
 		return data;
 	}
 }

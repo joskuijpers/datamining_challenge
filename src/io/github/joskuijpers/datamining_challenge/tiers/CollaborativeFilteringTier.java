@@ -2,6 +2,7 @@ package io.github.joskuijpers.datamining_challenge.tiers;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
 import io.github.joskuijpers.datamining_challenge.math.Matrix;
+import io.github.joskuijpers.datamining_challenge.math.Vector;
 import io.github.joskuijpers.datamining_challenge.model.Rating;
 import io.github.joskuijpers.datamining_challenge.model.User;
 
@@ -20,18 +21,24 @@ public class CollaborativeFilteringTier extends Tier{
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-		Matrix inputMatrix, diffMatrix, countMatrix, predMatrix;
+		Matrix imputMatrix, diffMatrix, countMatrix;
 
 
 		// Create matrix for input data
-		inputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
+		imputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
 				.size());
+		System.out.println("UserListsize "+data.getUserList().size());
+		System.out.println("MovieListsize "+data.getMovieList().size());
+		
 
 		// For every rating in the rating list, set value in matrix
 		for (Rating rating : data.getRatingList()) {
-			inputMatrix.set(rating.getMovie().getIndex() - 1, rating.getUser()
+			imputMatrix.set(rating.getMovie().getIndex() - 1, rating.getUser()
 					.getIndex() - 1, rating.getRating());
 		}
+		
+		data.setImputMatrix(imputMatrix);
+		
 		
 		// Create matrix for calculated data
 		diffMatrix = new Matrix(data.getMovieList().size(), data.getMovieList()
@@ -52,8 +59,8 @@ public class CollaborativeFilteringTier extends Tier{
 				//en nu moeten we er door heen gaan lopen
 				//dit moet sneller kunnen
 				for (int k = 0; k < data.getUserList().size(); k++) {
-					if(inputMatrix.get(j, k)>0&&inputMatrix.get(i, k)>0){
-						diff += inputMatrix.get(j, k)-inputMatrix.get(i, k);
+					if(imputMatrix.get(j, k)>0&&imputMatrix.get(i, k)>0){
+						diff += imputMatrix.get(j, k)-imputMatrix.get(i, k);
 						count++;
 					}
 				}
@@ -70,8 +77,8 @@ public class CollaborativeFilteringTier extends Tier{
 		System.out.println(diffMatrix.get(100, 130));
 		System.out.println(countMatrix.get(100, 130));
 		
-
-		
+        data.setDiffMatrix(diffMatrix);
+		data.setCountMatrix(countMatrix);
 		
 		return data;
 	}
