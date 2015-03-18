@@ -66,4 +66,37 @@ public class PredictTier extends Tier {
 
 		return data;
 	}
+	
+	private static TierData runCF(TierData data){
+		for(Rating predRating : data.getPredRatings()){
+			
+			
+			//Hierna moet de predictratings matrix gevuld worden. 
+			//De formule die hier voor gebruikt wordt is,
+			//per door de user gerate film, nemen we de rating van deze film+ plus de diff van deze film.
+			//We vermenigvuldigen het met count, om een waarde aan te geven. Dit tellen we allemaal bij elkaar op
+			//Dan delen we het door de som van counts van alle meegenomen waarden
+			//  sum(count*(userrating+diffwaard) )/ sum counts
+			
+			// Calculate the rating
+			int userIndex = predRating.getUser().getIndex() - 1;
+			int movieIndex = predRating.getMovie().getIndex() - 1;
+			
+			Vector userColumn = data.getImputMatrix().getColumn(userIndex);
+			
+			float teller = 0.0f;
+			float noemer = 0.0f;
+			
+			for(int i=0; i<userColumn.size();++i){
+				if(userColumn.get(i)>0.0){
+					teller += userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i)*data.getCountMatrix().get(movieIndex, i);
+					noemer += data.getCountMatrix().get(movieIndex, i);
+				}
+			}
+			
+			predRating.setRating(teller/noemer);
+			
+		}
+		return data;
+	}
 }

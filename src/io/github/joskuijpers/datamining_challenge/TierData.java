@@ -19,6 +19,9 @@ public class TierData {
 
 	// LatentFactorModel
 	private Matrix movieFactorMatrix, factorUserMatrix;
+	
+	//Collaborative Filtering
+	private Matrix diffMatrix, countMatrix, imputMatrix;
 
 	public TierData(UserList userList, MovieList movieList,
 			RatingList ratingList, RatingList predRatings) {
@@ -75,7 +78,7 @@ public class TierData {
 	public void setMovieFactorMatrix(Matrix movieFactorMatrix) {
 		this.movieFactorMatrix = movieFactorMatrix;
 	}
-
+	
 	public Matrix getFactorUserMatrix() {
 		return factorUserMatrix;
 	}
@@ -83,4 +86,29 @@ public class TierData {
 	public void setFactorUserMatrix(Matrix factorUserMatrix) {
 		this.factorUserMatrix = factorUserMatrix;
 	}
+
+	public Matrix getCountMatrix() {
+		return countMatrix;
+	}
+
+	public void setCountMatrix(Matrix countMatrix) {
+		this.countMatrix = countMatrix;
+	}
+	
+	public Matrix getDiffMatrix() {
+		return diffMatrix;
+	}
+
+	public void setDiffMatrix(Matrix diffMatrix) {
+		this.diffMatrix = diffMatrix;
+	}
+	
+	public Matrix getImputMatrix() {
+		return imputMatrix;
+	}
+
+	public void setImputMatrix(Matrix imputMatrix) {
+		this.imputMatrix = imputMatrix;
+	}
+	
 }
