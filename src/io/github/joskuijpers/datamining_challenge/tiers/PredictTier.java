@@ -38,7 +38,52 @@ public class PredictTier extends Tier {
 			// Clip the rating to 0.0 - 5.0
 			rating = Math.max(Math.min(5.0f, rating), 0.0f);
 
-			predRating.setRating(rating);
+					
+			
+			/////De tweede methode, met CF
+			Float rating2 = 0.0f;
+			
+			//Hierna moet de predictratings matrix gevuld worden. 
+			//De formule die hier voor gebruikt wordt is,
+			//per door de user gerate film, nemen we de rating van deze film+ plus de diff van deze film.
+			//We vermenigvuldigen het met count, om een waarde aan te geven. Dit tellen we allemaal bij elkaar op
+			//Dan delen we het door de som van counts van alle meegenomen waarden
+			//  sum(count*(userrating+diffwaard) )/ sum counts
+			
+			// Calculate the rating
+			int userIndex = predRating.getUser().getIndex() - 1;
+			//System.out.println("userIndex: " + userIndex);
+			int movieIndex = predRating.getMovie().getIndex() - 1;
+			
+			Vector userColumn = data.getImputMatrix().getColumn(userIndex);
+			
+			float teller = 0.0f;
+			float noemer = 0.0f;
+			for(int i=0; i<userColumn.size();++i){
+				if(userColumn.get(i)>0.0){
+					if(!data.getDiffMatrix().get(movieIndex, i).isNaN()){
+					teller += (userColumn.get(i)+data.getDiffMatrix().get(i,movieIndex))*data.getCountMatrix().get(i,movieIndex);
+					noemer += data.getCountMatrix().get(movieIndex, i);
+					}
+				}
+			}
+			
+			// Calculate the rating
+			rating2 = teller/noemer;
+			//NaN eruit halen. en dan maar de bias nemen.
+			if(rating2.isNaN()){			
+				rating2 = rating;
+			}
+			// Clip the rating to 0.0 - 5.0
+			rating2 = Math.max(Math.min(5.0f, rating2), 0.0f);
+			
+			if(data.getUserList().get(userIndex).getNumberOfRatings()>30){
+				predRating.setRating(rating2);
+			}
+			else{
+				predRating.setRating(rating);
+			}
+			
 		}
 
 		return data;
@@ -69,7 +114,7 @@ public class PredictTier extends Tier {
 	
 	public static TierData runCF(TierData data){
 		for(Rating predRating : data.getPredRatings()){
-			Float rating = 0.0f;
+			Float rating2 = 0.0f;
 			
 			//Hierna moet de predictratings matrix gevuld worden. 
 			//De formule die hier voor gebruikt wordt is,
@@ -96,33 +141,16 @@ public class PredictTier extends Tier {
 				}
 			}
 			
-			
 			// Calculate the rating
-			rating = teller/noemer;
-			
-			if(rating.isNaN()){			
-				System.out.println("userIndex " + userIndex);
-				System.out.println(teller);
-				System.out.println(noemer);
-				System.out.println(teller/noemer);
-				for(int i=0; i<userColumn.size();++i){
-					if(userColumn.get(i)>0.0){
-						teller += (userColumn.get(i)+data.getDiffMatrix().get(movieIndex, i))*data.getCountMatrix().get(movieIndex, i);
-						noemer += data.getCountMatrix().get(movieIndex, i);
-						System.out.println("Usercolum: "+userColumn.get(i)+" getdiff: "+data.getDiffMatrix().get(movieIndex, i)+"getcount: "+data.getCountMatrix().get(movieIndex, i));
-					}
-				}
-				System.out.println(data.getUserList().get(userIndex).getNumberOfRatings());
-				rating = data.getMovieMean();
+			rating2 = teller/noemer;
+			//NaN eruit halen.
+			if(rating2.isNaN()){			
+				rating2 = data.getMovieMean();
 			}
-
 			// Clip the rating to 0.0 - 5.0
-			rating = Math.max(Math.min(5.0f, rating), 0.0f);
-			predRating.setRating(rating);
-			
-		}
-		
-		
+			rating2 = Math.max(Math.min(5.0f, rating2), 0.0f);
+			predRating.setRating(rating2);
+					}
 		return data;
 	}
 }

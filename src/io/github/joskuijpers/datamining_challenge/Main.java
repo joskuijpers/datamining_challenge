@@ -61,7 +61,7 @@ public class Main {
 		tierData = CollaborativeFilteringTier.run(tierData);
 
 		// Predict with average per movie and bias per user.
-		tierData = PredictTier.runCF(tierData);
+		tierData = PredictTier.run(tierData);
 
 		// Return predictions
 		return tierData.getPredRatings();
