@@ -328,4 +328,13 @@ public class Matrix {
 		m.elements = elements.clone();
 		return m;
 	}
+	
+	@Override
+	public String toString() {
+		String str = "[\n";
+		for(int i = 0; i < this.m; ++i) {
+			str += this.getRow(i).toString();
+		}
+		return str += "]";
+	}
 }

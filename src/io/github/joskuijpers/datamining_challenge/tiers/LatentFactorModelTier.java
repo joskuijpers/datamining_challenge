@@ -20,6 +20,7 @@ public class LatentFactorModelTier extends Tier {
 	public static TierData run(TierData data) {
 		Matrix inputMatrix, movieMatrix, userMatrix;
 		int numFactors = 10;
+		float learningRate = 0.001f;
 
 		// Create matrix for input data
 		inputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
@@ -40,8 +41,8 @@ public class LatentFactorModelTier extends Tier {
 		data.setMovieFactorMatrix(movieMatrix);
 
 		/// Initialize matrices using the average of all the ratings ('non blanks')
-		movieMatrix.init(data.getMovieMean());	// X
-		userMatrix.init(data.getMovieMean());	// Y
+		movieMatrix.init((float)(Math.sqrt(data.getMovieMean()) / (double)movieMatrix.getNumberOfRows()));	// X
+		userMatrix.init((float)(Math.sqrt(data.getMovieMean()) / (double)userMatrix.getNumberOfColumns()));	// Y
 
 		// Calculate predictions
 		// MIN SUM  (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
@@ -57,11 +58,39 @@ public class LatentFactorModelTier extends Tier {
 		  
 		 */
 		
-		for(int iter = 0; iter < 10; ++iter) {
+		for (int iter = 0; iter < 10; ++iter) {
+			for (int f = 0; f < numFactors; ++f) {
+				for (Rating rating : data.getRatingList()) {
+					int i = rating.getMovie().getIndex() - 1; // movie
+					int x = rating.getUser().getIndex() - 1; // user
 
+					// Calculate the current rating in the matrices
+					// r_xi - q_i * p_x
+					float predictedRating = movieMatrix.getRow(i).dotproduct(
+							userMatrix.getColumn(x));
 
-			double error = rmse(inputMatrix, movieMatrix, userMatrix, data);
-			System.out.println("Error for iter "+iter+": "+error);
+					// TODO: add bias
+					float error = rating.getRating() - predictedRating;
+					if(!Float.isNaN(error))
+						System.out.println("error " + error);
+
+					// Update values
+					float uv = userMatrix.elements[f][x];
+					userMatrix.elements[f][x] += error
+							* movieMatrix.elements[i][f];
+					movieMatrix.elements[i][f] += error * uv;
+				}
+
+				// for(movie)
+				// for user
+				// real err = lrate * (rating - predictRating(movie, user)); =>
+				// r_xi - q_i * p_x
+				// userValue[user] += err * movieValue[movie]
+				// movieValue[movie] ++ err * userValue[user]
+
+			}
+//			double error = rmse(inputMatrix, movieMatrix, userMatrix, data);
+//			System.out.println("Error for iter " + iter + ": " + error);
 		}
 
 

@@ -13,8 +13,8 @@ import io.github.joskuijpers.datamining_challenge.model.Rating;
 public class PredictTier extends Tier {
 
 	public static TierData run(TierData data) {
-//		return runLFMBiased(data);
-		return runBiases(data);
+		return runLFMBiased(data);
+//		return runBiases(data);
 	}
 
 	/**
