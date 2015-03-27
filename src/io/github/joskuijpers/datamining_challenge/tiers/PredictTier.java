@@ -27,21 +27,21 @@ public class PredictTier extends Tier {
 	 */
 	private static TierData runBiases(TierData data) {
 		for (Rating predRating : data.getPredRatings()) {
-			float rating;
+			float ratingbias;
 
 			// Calculate the rating
-			rating = //predRating.getMovie().getAverageRating()
+			ratingbias = //predRating.getMovie().getAverageRating()
 					data.getMovieMean()
 					+ predRating.getMovie().getBias()
 					+ predRating.getUser().getBias();
 
 			// Clip the rating to 0.0 - 5.0
-			rating = Math.max(Math.min(5.0f, rating), 0.0f);
+			ratingbias = Math.max(Math.min(5.0f, ratingbias), 0.0f);
 
 					
 			
 			/////De tweede methode, met CF
-			Float rating2 = 0.0f;
+			Float ratingcf = 0.0f;
 			
 			//Hierna moet de predictratings matrix gevuld worden. 
 			//De formule die hier voor gebruikt wordt is,
@@ -69,19 +69,20 @@ public class PredictTier extends Tier {
 			}
 			
 			// Calculate the rating
-			rating2 = teller/noemer;
+			ratingcf = teller/noemer;
 			//NaN eruit halen. en dan maar de bias nemen.
-			if(rating2.isNaN()){			
-				rating2 = rating;
+			if(ratingcf.isNaN()){			
+				ratingcf = ratingbias;
 			}
 			// Clip the rating to 0.0 - 5.0
-			rating2 = Math.max(Math.min(5.0f, rating2), 0.0f);
+			ratingcf = Math.max(Math.min(5.0f, ratingcf), 0.0f);
 			
-			if(data.getUserList().get(userIndex).getNumberOfRatings()>30){
-				predRating.setRating(rating2);
+			// Dit is de tradeoff tussen de ratings. dit is een gokje, werkt nog niet beter dan cf alleen.
+			if(data.getUserList().get(userIndex).getNumberOfRatings()>10){
+				predRating.setRating(ratingcf);
 			}
 			else{
-				predRating.setRating(rating);
+				predRating.setRating(ratingbias);
 			}
 			
 		}
@@ -114,7 +115,7 @@ public class PredictTier extends Tier {
 	
 	public static TierData runCF(TierData data){
 		for(Rating predRating : data.getPredRatings()){
-			Float rating2 = 0.0f;
+			Float ratingcf = 0.0f;
 			
 			//Hierna moet de predictratings matrix gevuld worden. 
 			//De formule die hier voor gebruikt wordt is,
@@ -142,14 +143,14 @@ public class PredictTier extends Tier {
 			}
 			
 			// Calculate the rating
-			rating2 = teller/noemer;
+			ratingcf = teller/noemer;
 			//NaN eruit halen.
-			if(rating2.isNaN()){			
-				rating2 = data.getMovieMean();
+			if(ratingcf.isNaN()){			
+				ratingcf = data.getMovieMean();
 			}
 			// Clip the rating to 0.0 - 5.0
-			rating2 = Math.max(Math.min(5.0f, rating2), 0.0f);
-			predRating.setRating(rating2);
+			ratingcf = Math.max(Math.min(5.0f, ratingcf), 0.0f);
+			predRating.setRating(ratingcf);
 					}
 		return data;
 	}

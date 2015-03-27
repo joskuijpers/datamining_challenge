@@ -10,7 +10,7 @@ public class Movie {
 	// Computed
 	private float bias = 0.0f, averageRating = 0.0f;
 	private int numberOfRatings = 0;
-
+	
 	public Movie(int _index, int _year, String _title) {
 		this.index = _index;
 		this.year = _year;
