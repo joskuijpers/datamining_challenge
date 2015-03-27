@@ -21,7 +21,7 @@ public class LatentFactorModelTier extends Tier {
 	public static TierData run(TierData data) {
 		SingularValueDecomposition svd;
 		
-		
+		svd = new SingularValueDecomposition(data.getInputMatrix());
 		
 		// Calculate predictions
 		// MIN SUM (r_xi -(mean + movieBias + userBias + q_i * p_x))^2

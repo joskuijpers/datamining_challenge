@@ -1,6 +1,6 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.OpenMapRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
@@ -11,7 +11,7 @@ public class InputMatrixTier extends Tier {
 		RealMatrix inputMatrix;
 		
 		// Create matrix for input data
-		inputMatrix = new Array2DRowRealMatrix(data.getMovieList().size(), data.getUserList().size());
+		inputMatrix = new OpenMapRealMatrix(data.getMovieList().size(), data.getUserList().size());
 		
 		// For every rating in the rating list, set value in matrix
 		for (Rating rating : data.getRatingList()) {
