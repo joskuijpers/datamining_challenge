@@ -1,10 +1,8 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
+import org.apache.commons.math3.linear.*;
+
 import io.github.joskuijpers.datamining_challenge.TierData;
-import io.github.joskuijpers.datamining_challenge.math.Matrix;
-import io.github.joskuijpers.datamining_challenge.math.Vector;
-import io.github.joskuijpers.datamining_challenge.model.Rating;
-import io.github.joskuijpers.datamining_challenge.model.User;
 
 /**
  * A tier using collaborative filtering, implementing the slope one method
@@ -21,62 +19,43 @@ public class CollaborativeFilteringTier extends Tier{
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-		Matrix imputMatrix, diffMatrix, countMatrix;
-
-
-		// Create matrix for input data
-		imputMatrix = new Matrix(data.getMovieList().size(), data.getUserList()
-				.size());
-		System.out.println("UserListsize "+data.getUserList().size());
-		System.out.println("MovieListsize "+data.getMovieList().size());
+		RealMatrix diffMatrix, countMatrix, inputMatrix;
 		
-
-		// For every rating in the rating list, set value in matrix
-		for (Rating rating : data.getRatingList()) {
-			imputMatrix.set(rating.getMovie().getIndex() - 1, rating.getUser()
-					.getIndex() - 1, rating.getRating());
-		}
-		
-		data.setImputMatrix(imputMatrix);
-		
+		inputMatrix = data.getInputMatrix();
 		
 		// Create matrix for calculated data
-		diffMatrix = new Matrix(data.getMovieList().size(), data.getMovieList()
-				.size());
-		
-		countMatrix = new Matrix(data.getMovieList().size(), data.getMovieList()
-				.size());
+		diffMatrix = new Array2DRowRealMatrix(data.getMovieList().size(), data.getMovieList().size());
+		countMatrix = new Array2DRowRealMatrix(data.getMovieList().size(), data.getMovieList().size());
 		
 		// Calculate the values for calculated data
-		for (int i = 0; i < data.getMovieList().size(); i++) {
-			for (int j = 0; j < data.getMovieList().size(); j++) {
-				if(i==j){
-					diffMatrix.set(i,j,0.0f);
-					countMatrix.set(i, j, 0.0f);
+		for (int i = 0; i < data.getMovieList().size(); ++i) {
+			for (int j = 0; j < data.getMovieList().size(); ++j) {
+				if(i == j) {
+					diffMatrix.setEntry(i, j, 0.0);
+					countMatrix.setEntry(i, j, 0.0);
 				}
-				Float diff = 0.0f;
-				Float count = 0.0f;
+				
+				double diff = 0.0;
+				double count = 0.0;
+				
 				//en nu moeten we er door heen gaan lopen
 				//dit moet sneller kunnen
-				for (int k = 0; k < data.getUserList().size(); k++) {
-					if(imputMatrix.get(j, k)>0&&imputMatrix.get(i, k)>0){
-						diff += imputMatrix.get(j, k)-imputMatrix.get(i, k);
-						count++;
+				for (int k = 0; k < data.getUserList().size(); ++k) {
+					if(inputMatrix.getEntry(j, k) > 0 && inputMatrix.getEntry(i, k) > 0){
+						diff += inputMatrix.getEntry(j, k) - inputMatrix.getEntry(i, k);
+						++count;
 					}
 				}
 				
+				// Sla het gemiddelde verschil op tussen twee films
+				diffMatrix.setEntry(i, j, diff/count);
 				
-				diffMatrix.set(i,j,diff/count);//het vullen van de matrix met het gemiddelde verschil tussen twee films.
-				countMatrix.set(i, j, count);//het bijhouden van de count.
+				// Houdt de count <van?> bij
+				countMatrix.setEntry(i, j, count);
 			}
 			
 		}
-		System.out.println(diffMatrix.get(4, 5));
-		System.out.println(countMatrix.get(4, 5));
-		
-		System.out.println(diffMatrix.get(100, 130));
-		System.out.println(countMatrix.get(100, 130));
-		
+				
         data.setDiffMatrix(diffMatrix);
 		data.setCountMatrix(countMatrix);
 		

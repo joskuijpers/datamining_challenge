@@ -16,13 +16,16 @@ public class TierData {
 	private RatingList ratingList, predRatings;
 
 	// MovieMeanTier
-	private float movieMean;
+	private double movieMean;
 
+	// Multi Tier
+	private RealMatrix inputMatrix;
+	
 	// LatentFactorModel
-	private RealMatrix movieFactorMatrix, factorUserMatrix;
+	private RealMatrix svdMatrixes[];
 	
 	//Collaborative Filtering
-	private RealMatrix diffMatrix, countMatrix, imputMatrix;
+	private RealMatrix diffMatrix, countMatrix;
 
 	public TierData(UserList userList, MovieList movieList,
 			RatingList ratingList, RatingList predRatings) {
@@ -64,28 +67,12 @@ public class TierData {
 		this.ratingList = ratingList;
 	}
 
-	public float getMovieMean() {
+	public double getMovieMean() {
 		return movieMean;
 	}
 
-	public void setMovieMean(float movieMean) {
+	public void setMovieMean(double movieMean) {
 		this.movieMean = movieMean;
-	}
-
-	public RealMatrix getMovieFactorMatrix() {
-		return movieFactorMatrix;
-	}
-
-	public void setMovieFactorMatrix(RealMatrix movieFactorMatrix) {
-		this.movieFactorMatrix = movieFactorMatrix;
-	}
-	
-	public RealMatrix getFactorUserMatrix() {
-		return factorUserMatrix;
-	}
-
-	public void setFactorUserMatrix(RealMatrix factorUserMatrix) {
-		this.factorUserMatrix = factorUserMatrix;
 	}
 
 	public RealMatrix getCountMatrix() {
@@ -104,12 +91,20 @@ public class TierData {
 		this.diffMatrix = diffMatrix;
 	}
 	
-	public RealMatrix getImputMatrix() {
-		return imputMatrix;
+	public RealMatrix getInputMatrix() {
+		return inputMatrix;
 	}
 
-	public void setImputMatrix(RealMatrix imputMatrix) {
-		this.imputMatrix = imputMatrix;
+	public void setInputMatrix(RealMatrix inputMatrix) {
+		this.inputMatrix = inputMatrix;
+	}
+
+	public RealMatrix[] getSvdMatrixes() {
+		return svdMatrixes;
+	}
+
+	public void setSvdMatrixes(RealMatrix svdMatrixes[]) {
+		this.svdMatrixes = svdMatrixes;
 	}
 	
 }

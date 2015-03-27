@@ -22,7 +22,6 @@ public class UserBiasTier extends Tier {
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-
 		for (Rating rating : data.getRatingList()) {
 			rating.getUser().updateBiasAndAverage(rating.getRating(),
 					rating.getMovie().getAverageRating());

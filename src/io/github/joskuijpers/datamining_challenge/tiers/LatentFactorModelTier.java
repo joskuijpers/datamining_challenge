@@ -19,15 +19,9 @@ public class LatentFactorModelTier extends Tier {
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-		RealMatrix inputMatrix, movieMatrix, userMatrix;
+		SingularValueDecomposition svd;
 		
-		// Create matrix for input data
-		inputMatrix = new Array2DRowRealMatrix(data.getMovieList().size(), data.getUserList().size());
 		
-		// For every rating in the rating list, set value in matrix
-		for (Rating rating : data.getRatingList()) {
-			inputMatrix.setEntry(rating.getMovie().getIndex() - 1, rating.getUser().getIndex() - 1, rating.getRating());
-		}
 		
 		// Calculate predictions
 		// MIN SUM (r_xi -(mean + movieBias + userBias + q_i * p_x))^2

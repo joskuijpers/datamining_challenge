@@ -8,7 +8,7 @@ public class User {
 	private boolean male;
 
 	// Computed
-	private float bias = 0.0f, averageRating = 0.0f;
+	private double bias = 0.0f, averageRating = 0.0f;
 	private int numberOfRatings = 0;
 
 	public User(int _index, boolean _male, int _age, int _profession) {
@@ -38,23 +38,23 @@ public class User {
 		return numberOfRatings;
 	}
 
-	public float getAverageRating() {
+	public double getAverageRating() {
 		return averageRating;
 	}
 
-	public void setAverageRating(float averageRating) {
+	public void setAverageRating(double averageRating) {
 		this.averageRating = averageRating;
 	}
 
-	public float getBias() {
+	public double getBias() {
 		return bias;
 	}
 
-	public void setBias(float bias) {
+	public void setBias(double bias) {
 		this.bias = bias;
 	}
 
-	public void updateBiasAndAverage(float update, float movieMean) {
+	public void updateBiasAndAverage(double update, double movieMean) {
 		++numberOfRatings;
 
 		averageRating += ((update - averageRating) / numberOfRatings);

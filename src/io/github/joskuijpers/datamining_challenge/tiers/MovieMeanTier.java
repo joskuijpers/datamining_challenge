@@ -16,13 +16,12 @@ public class MovieMeanTier extends Tier {
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-
-		float movieMean = data.getRatingList().get(0).getRating();
-		for (int i = 1; i < data.getRatingList().size(); i++) {
-			float f = (float)i;
+		double movieMean = data.getRatingList().get(0).getRating();
+		for (int i = 1; i < data.getRatingList().size(); ++i) {
+			double f = (double)i;
 			
-			movieMean = (f / (f + 1.0f)) * movieMean
-					+ (1.0f / (f + 1.0f))
+			movieMean = (f / (f + 1.0)) * movieMean
+					+ (1.0 / (f + 1.0))
 					* data.getRatingList().get(i).getRating();
 		}
 

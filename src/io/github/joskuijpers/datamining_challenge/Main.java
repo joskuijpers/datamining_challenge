@@ -5,8 +5,6 @@ import io.github.joskuijpers.datamining_challenge.tiers.*;
 
 import java.util.Locale;
 
-import org.apache.commons.math3.linear.RealMatrix;
-
 public class Main {
 
 	public static void main(String[] args) {
@@ -56,17 +54,20 @@ public class Main {
 		// Calculate the bias for every user
 		tierData = UserBiasTier.run(tierData);
 		
+		// Construct the input matrix, used by multiple tiers
+		tierData = InputMatrixTier.run(tierData);
+		
 		//Het runnen van de Statdata
 		tierData = StatData.run(tierData);
 
 		// Compute the LFM matrices
-		tierData = LatentFactorModelTier.run(tierData);
+//		tierData = LatentFactorModelTier.run(tierData);
 		
 		// Compute the Collaborative Filtering matrices
-		//tierData = CollaborativeFilteringTier.run(tierData);
+		tierData = CollaborativeFilteringTier.run(tierData);
 
 		// Predict with average per movie and bias per user.
-		//tierData = PredictTier.run(tierData);
+		tierData = PredictTier.run(tierData);
 
 		// Return predictions
 		return tierData.getPredRatings();
