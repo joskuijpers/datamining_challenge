@@ -1,7 +1,6 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
-import io.github.joskuijpers.datamining_challenge.math.Vector;
 import io.github.joskuijpers.datamining_challenge.model.Rating;
 
 /**
@@ -90,17 +89,17 @@ public class PredictTier extends Tier {
 	
 	private static TierData runLFMBiased(TierData data) {
 		for (Rating predRating : data.getPredRatings()) {
-			float rating;
+			float rating = 0.0f;
 			
 			// Calculate the rating
 			int userIndex = predRating.getUser().getIndex() - 1;
 			int movieIndex = predRating.getMovie().getIndex() - 1;
 			
-			Vector user = data.getFactorUserMatrix().getColumn(userIndex);
-			Vector movie = data.getMovieFactorMatrix().getRow(movieIndex);
+//			Vector user = data.getFactorUserMatrix().getColumn(userIndex);
+//			Vector movie = data.getMovieFactorMatrix().getRow(movieIndex);
 			
 			// Calculate the rating
-			rating = movie.dotproduct(user);
+//			rating = movie.dotproduct(user);
 			
 			// Clip the rating to 0.0 - 5.0
 			rating = Math.max(Math.min(5.0f, rating), 0.0f);

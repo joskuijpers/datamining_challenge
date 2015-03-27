@@ -1,6 +1,7 @@
 package io.github.joskuijpers.datamining_challenge;
 
-import io.github.joskuijpers.datamining_challenge.math.Matrix;
+import org.apache.commons.math3.linear.RealMatrix;
+
 import io.github.joskuijpers.datamining_challenge.model.*;
 
 /**
@@ -18,10 +19,10 @@ public class TierData {
 	private float movieMean;
 
 	// LatentFactorModel
-	private Matrix movieFactorMatrix, factorUserMatrix;
+	private RealMatrix movieFactorMatrix, factorUserMatrix;
 	
 	//Collaborative Filtering
-	private Matrix diffMatrix, countMatrix, imputMatrix;
+	private RealMatrix diffMatrix, countMatrix, imputMatrix;
 
 	public TierData(UserList userList, MovieList movieList,
 			RatingList ratingList, RatingList predRatings) {
@@ -71,43 +72,43 @@ public class TierData {
 		this.movieMean = movieMean;
 	}
 
-	public Matrix getMovieFactorMatrix() {
+	public RealMatrix getMovieFactorMatrix() {
 		return movieFactorMatrix;
 	}
 
-	public void setMovieFactorMatrix(Matrix movieFactorMatrix) {
+	public void setMovieFactorMatrix(RealMatrix movieFactorMatrix) {
 		this.movieFactorMatrix = movieFactorMatrix;
 	}
 	
-	public Matrix getFactorUserMatrix() {
+	public RealMatrix getFactorUserMatrix() {
 		return factorUserMatrix;
 	}
 
-	public void setFactorUserMatrix(Matrix factorUserMatrix) {
+	public void setFactorUserMatrix(RealMatrix factorUserMatrix) {
 		this.factorUserMatrix = factorUserMatrix;
 	}
 
-	public Matrix getCountMatrix() {
+	public RealMatrix getCountMatrix() {
 		return countMatrix;
 	}
 
-	public void setCountMatrix(Matrix countMatrix) {
+	public void setCountMatrix(RealMatrix countMatrix) {
 		this.countMatrix = countMatrix;
 	}
 	
-	public Matrix getDiffMatrix() {
+	public RealMatrix getDiffMatrix() {
 		return diffMatrix;
 	}
 
-	public void setDiffMatrix(Matrix diffMatrix) {
+	public void setDiffMatrix(RealMatrix diffMatrix) {
 		this.diffMatrix = diffMatrix;
 	}
 	
-	public Matrix getImputMatrix() {
+	public RealMatrix getImputMatrix() {
 		return imputMatrix;
 	}
 
-	public void setImputMatrix(Matrix imputMatrix) {
+	public void setImputMatrix(RealMatrix imputMatrix) {
 		this.imputMatrix = imputMatrix;
 	}
 	
