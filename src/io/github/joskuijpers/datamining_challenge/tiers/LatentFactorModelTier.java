@@ -23,11 +23,19 @@ public class LatentFactorModelTier extends Tier {
 		
 		svd = new SingularValueDecomposition(data.getInputMatrix());
 		
+		System.out.println("Built 3 matrices. Num features: " + svd.getS().getColumnDimension());
+		
 		// Calculate predictions
 		// MIN SUM (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
 		
 		return data;
+	}
+	
+	public static double getPrediction(TierData data, int movie, int user) {
+		
+		
+		return 0.0;
 	}
 	
 	/**
