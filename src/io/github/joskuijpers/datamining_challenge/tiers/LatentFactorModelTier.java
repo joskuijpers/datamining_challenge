@@ -3,7 +3,6 @@ package io.github.joskuijpers.datamining_challenge.tiers;
 import org.apache.commons.math3.linear.*;
 
 import io.github.joskuijpers.datamining_challenge.TierData;
-import io.github.joskuijpers.datamining_challenge.model.*;
 
 /**
  * A tier utilizing latent factor models to make predictions

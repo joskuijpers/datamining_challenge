@@ -84,7 +84,7 @@ public class PredictTier extends Tier {
 	
 	private static TierData runLFMBiased(TierData data) {
 		for (Rating predRating : data.getPredRatings()) {
-			float rating = 0.0f;
+			double rating = 0.0f;
 			
 			// Calculate the rating
 			int userIndex = predRating.getUser().getIndex() - 1;
