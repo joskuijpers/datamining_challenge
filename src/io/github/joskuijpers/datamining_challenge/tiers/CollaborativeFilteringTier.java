@@ -20,6 +20,8 @@ public class CollaborativeFilteringTier extends Tier{
 	 */
 	public static TierData run(TierData data) {
 		RealMatrix diffMatrix, countMatrix, inputMatrix;
+		long tijdnu = System.currentTimeMillis();
+		long tijdtoen = System.currentTimeMillis();
 		
 		inputMatrix = data.getInputMatrix();
 		
@@ -48,12 +50,16 @@ public class CollaborativeFilteringTier extends Tier{
 				}
 				
 				// Sla het gemiddelde verschil op tussen twee films
-				diffMatrix.setEntry(i, j, diff/count);
+				diffMatrix.setEntry(i, j, diff / count);
 				
 				// Houdt de count <van?> bij
 				countMatrix.setEntry(i, j, count);
 			}
-			
+			if(i%100==0){
+				tijdnu = System.currentTimeMillis();
+				System.out.println(i + "de kolum diffmatrix, deze honderd duurden: "+ (tijdnu-tijdtoen) + " milliseconden");
+				tijdtoen = tijdnu;
+			}
 		}
 				
         data.setDiffMatrix(diffMatrix);

@@ -15,8 +15,8 @@ import io.github.joskuijpers.datamining_challenge.model.Rating;
 public class PredictTier extends Tier {
 	
 	public static TierData run(TierData data) {
-		 return runLFMBiased(data);
-//		return runBiases(data);
+//		 return runLFMBiased(data);
+		return runBiases(data);
 	}
 	
 	/**
@@ -57,14 +57,16 @@ public class PredictTier extends Tier {
 					double diffEntry = data.getDiffMatrix().getEntry(i, movieIndex);
 					
 					if (!Double.isNaN(diffEntry)) {
-						teller += (userColumn[i] + diffEntry) * data.getCountMatrix().getEntry(i, movieIndex);
-						noemer += data.getCountMatrix().getEntry(movieIndex, i);
+						//ik ga proberen eerst het gemiddelde van de film er af te trekken en dan heb bij de rating, 
+						//dit bij de biased rating op te tellen.
+						teller += (userColumn[i] +diffEntry) * data.getCountMatrix().getEntry(i, movieIndex); 
+						noemer += data.getCountMatrix().getEntry(movieIndex,i);
 					}
 				}
 			}
 			
 			// Calculate the rating
-			ratingcf = teller / noemer;
+			ratingcf = (teller / noemer);
 			
 			// Gebruik de biased rating als er geen CF rating is.
 			// Gebruik ook de biased rating als er minder dan 10 ratings zijn.
@@ -77,6 +79,7 @@ public class PredictTier extends Tier {
 			ratingcf = Math.max(Math.min(5.0f, ratingcf), 0.0f);
 			
 			predRating.setRating(rating);
+			
 		}
 		
 		return data;
