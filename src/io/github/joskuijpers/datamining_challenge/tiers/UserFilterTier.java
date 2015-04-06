@@ -7,7 +7,7 @@ public class UserFilterTier extends Tier {
 	// number of ratings a user must have for filters to be applied
 	private final static int NUM_THRESHOLD = 10;
 	// upper bound of the average rating of a low spammer
-	private final static double LOW_SPAMMER_THRESHOLD = 1.4;
+	private final static double LOW_SPAMMER_THRESHOLD = 1.2;
 	
 	/**
 	 * Filter the users.
@@ -25,7 +25,7 @@ public class UserFilterTier extends Tier {
 
 				// filter lowspammers
 				if(user.getAverageRating() <= LOW_SPAMMER_THRESHOLD) {
-					user.setIgnored(true);
+//					user.setIgnored(true);
 					++numLowSpam;
 				}
 			}

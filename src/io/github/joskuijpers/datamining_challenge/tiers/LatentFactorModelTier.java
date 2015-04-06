@@ -29,8 +29,8 @@ public class LatentFactorModelTier extends Tier {
 	// Parameters
 	private final static int MAX_FEATURES = 20;
 	private final static int MIN_EPOCHS = 40;
-	private final static double LRATE = 0.005; //learning rate 		0.001
-	private final static double K = 0.015; // regularization 		0.015
+	private final static double LRATE = 0.0035; //learning rate 		0.001  met 0.005 0.753
+	private final static double K = 0.02; // regularization 		0.015
 	private final static double MIN_IMPROV = 0.0005; // minimal improvement to continue	0.0001
 	private final static double FINIT = 0.1; // initial feature value
 	
@@ -106,8 +106,8 @@ public class LatentFactorModelTier extends Tier {
 						int userId, movieId;
 						
 						// Skip ignored ratings
-//						if(rating.isIgnored())
-//							continue;
+						if(rating.isIgnored())
+							continue;
 
 						movieId = rating.getMovie().getIndex() - 1;
 						userId = rating.getUser().getIndex() - 1;
@@ -139,7 +139,7 @@ public class LatentFactorModelTier extends Tier {
 					}
 
 					// Calculate the new rmse
-					rmse = Math.sqrt(squareSum / (double) data.getRatingList().size()); // if ignore stuff, use .getNonIgnoredSize()
+					rmse = Math.sqrt(squareSum / (double) data.getRatingList().getSizeNonIgnored());
 				}
 				
 				// Plot for a nice view of change
