@@ -1,7 +1,6 @@
 package io.github.joskuijpers.datamining_challenge;
 
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import io.github.joskuijpers.datamining_challenge.model.*;
 
@@ -23,7 +22,7 @@ public class TierData {
 	private RealMatrix inputMatrix;
 	
 	// LatentFactorModel
-	private SingularValueDecomposition svd;
+	private RealMatrix movieFeatureMatrix, featureUserMatrix;
 	
 	//Collaborative Filtering
 	private RealMatrix diffMatrix, countMatrix;
@@ -100,12 +99,20 @@ public class TierData {
 		this.inputMatrix = inputMatrix;
 	}
 
-	public SingularValueDecomposition getSvd() {
-		return svd;
+	public RealMatrix getMovieFeatureMatrix() {
+		return movieFeatureMatrix;
 	}
 
-	public void setSvd(SingularValueDecomposition svd) {
-		this.svd = svd;
+	public void setMovieFeatureMatrix(RealMatrix movieFeatureMatrix) {
+		this.movieFeatureMatrix = movieFeatureMatrix;
+	}
+
+	public RealMatrix getFeatureUserMatrix() {
+		return featureUserMatrix;
+	}
+
+	public void setFeatureUserMatrix(RealMatrix featureUserMatrix) {
+		this.featureUserMatrix = featureUserMatrix;
 	}
 	
 }

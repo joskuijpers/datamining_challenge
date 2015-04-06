@@ -61,11 +61,11 @@ public class Main {
 		tierData = StatData.run(tierData);
 
 		// Compute the LFM matrices
-		//tierData = LatentFactorModelTier.run(tierData);
+		tierData = LatentFactorModelTier.run(tierData);
 		
 		// Compute the Collaborative Filtering matrices
-		tierData = CollaborativeFilteringTier.run(tierData);
-		System.out.println("CF afgerond");
+//		tierData = CollaborativeFilteringTier.run(tierData);
+//		System.out.println("CF afgerond");
 
 		// Predict with average per movie and bias per user.
 		tierData = PredictTier.run(tierData);

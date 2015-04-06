@@ -15,8 +15,8 @@ import io.github.joskuijpers.datamining_challenge.model.Rating;
 public class PredictTier extends Tier {
 	
 	public static TierData run(TierData data) {
-//		 return runLFMBiased(data);
-		return runBiases(data);
+		 return runLFMBiased(data);
+//		return runBiases(data);
 	}
 	
 	/**
@@ -86,6 +86,12 @@ public class PredictTier extends Tier {
 	}
 	
 	private static TierData runLFMBiased(TierData data) {
+		RealMatrix movieFeatureMatrix, featureUserMatrix;
+		RealVector movieVector, userVector;
+		
+		movieFeatureMatrix = data.getMovieFeatureMatrix();
+		featureUserMatrix = data.getFeatureUserMatrix();
+		
 		for (Rating predRating : data.getPredRatings()) {
 			double rating = 0.0f;
 			
@@ -93,7 +99,10 @@ public class PredictTier extends Tier {
 			int userIndex = predRating.getUser().getIndex() - 1;
 			int movieIndex = predRating.getMovie().getIndex() - 1;
 			
-			rating = LatentFactorModelTier.getPrediction(data, movieIndex, userIndex);
+			movieVector = movieFeatureMatrix.getRowVector(movieIndex);
+			userVector = featureUserMatrix.getRowVector(userIndex);
+			
+			rating = movieVector.dotProduct(userVector);
 			
 			// Clip the rating to 0.0 - 5.0
 			rating = Math.max(Math.min(5.0f, rating), 0.0f);
