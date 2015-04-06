@@ -10,6 +10,7 @@ public class User {
 	// Computed
 	private double bias = 0.0f, averageRating = 0.0f;
 	private int numberOfRatings = 0;
+	private boolean ignored = false;
 
 	public User(int _index, boolean _male, int _age, int _profession) {
 		this.index = _index;
@@ -59,5 +60,13 @@ public class User {
 
 		averageRating += ((update - averageRating) / numberOfRatings);
 		bias += ((update - movieMean) - bias) / numberOfRatings;
+	}
+
+	public boolean isIgnored() {
+		return ignored;
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
 	}
 }

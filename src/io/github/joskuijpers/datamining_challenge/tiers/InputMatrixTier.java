@@ -15,6 +15,9 @@ public class InputMatrixTier extends Tier {
 		
 		// For every rating in the rating list, set value in matrix
 		for (Rating rating : data.getRatingList()) {
+			if(rating.isIgnored())
+				continue;
+			
 			inputMatrix.setEntry(rating.getMovie().getIndex() - 1, rating.getUser().getIndex() - 1, rating.getRating());
 		}
 		

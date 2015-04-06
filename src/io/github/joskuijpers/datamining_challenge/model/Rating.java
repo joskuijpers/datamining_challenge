@@ -4,6 +4,7 @@ public class Rating {
 	private User user;
 	private Movie movie;
 	private double rating;
+	private boolean ignored = false;
 
 	public Rating(User user, Movie movie, int rating) {
 		this.user = user;
@@ -31,5 +32,13 @@ public class Rating {
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+
+	public boolean isIgnored() {
+		return ignored || user.isIgnored();
+	}
+
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
 	}
 }

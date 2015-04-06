@@ -27,6 +27,8 @@ public class Main {
 
 		// Write result file
 		predRatings.writeResultsFile("submission.csv");
+		
+		System.out.println("Finished running. Close all windows to quit.");
 	}
 
 	/**
@@ -53,6 +55,9 @@ public class Main {
 
 		// Calculate the bias for every user
 		tierData = UserBiasTier.run(tierData);
+		
+		// Filter spam users
+		tierData = UserFilterTier.run(tierData);
 		
 		// Construct the input matrix, used by multiple tiers
 		tierData = InputMatrixTier.run(tierData);

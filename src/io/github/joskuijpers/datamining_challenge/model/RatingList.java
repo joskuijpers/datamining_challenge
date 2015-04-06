@@ -8,7 +8,8 @@ import java.io.PrintWriter;
 
 public class RatingList extends ArrayList<Rating> {
 	private static final long serialVersionUID = 1L;
-
+	private int sizeNonIgnored = -1;
+	
 	// Reads in a file with rating data
 	public void readFile(String filename, UserList userList, MovieList movieList) {
 		BufferedReader br = null;
@@ -55,6 +56,23 @@ public class RatingList extends ArrayList<Rating> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
 
+	
+	/**
+	 * Get size of the list, dismissing ignored ratings.
+	 * 
+	 * @return number
+	 */
+	public int getSizeNonIgnored() {
+		if(sizeNonIgnored == -1) {
+			sizeNonIgnored = 0;
+			for(Rating rating : this) {
+				if(!rating.isIgnored())
+					++sizeNonIgnored;
+			}
+		}
+		return sizeNonIgnored;
 	}
 }

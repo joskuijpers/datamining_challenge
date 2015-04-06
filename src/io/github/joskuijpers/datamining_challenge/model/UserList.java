@@ -7,7 +7,8 @@ import java.io.BufferedReader;
 public class UserList extends ArrayList<User> {
 
 	private static final long serialVersionUID = 1L;
-
+	private int sizeNonIgnored = -1;
+	
 	// Reads in a file with user data
 	public void readFile(String filename) {
 		BufferedReader br = null;
@@ -33,5 +34,21 @@ public class UserList extends ArrayList<User> {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Get size of the list, dismissing ignored users.
+	 * 
+	 * @return number
+	 */
+	public int getSizeNonIgnored() {
+		if(sizeNonIgnored == -1) {
+			sizeNonIgnored = 0;
+			for(User user : this) {
+				if(!user.isIgnored())
+					++sizeNonIgnored;
+			}
+		}
+		return sizeNonIgnored;
 	}
 }

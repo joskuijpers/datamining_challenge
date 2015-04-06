@@ -100,7 +100,7 @@ public class PredictTier extends Tier {
 			int movieIndex = predRating.getMovie().getIndex() - 1;
 			
 			movieVector = movieFeatureMatrix.getRowVector(movieIndex);
-			userVector = featureUserMatrix.getRowVector(userIndex);
+			userVector = featureUserMatrix.getColumnVector(userIndex);
 			
 			rating = movieVector.dotProduct(userVector);
 			
