@@ -1,13 +1,6 @@
 package io.github.joskuijpers.datamining_challenge.tiers;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -16,6 +9,8 @@ import org.jfree.chart.*;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import io.github.joskuijpers.datamining_challenge.Main;
+import io.github.joskuijpers.datamining_challenge.MatUtils;
 import io.github.joskuijpers.datamining_challenge.TierData;
 import io.github.joskuijpers.datamining_challenge.model.Rating;
 
@@ -48,32 +43,18 @@ public class LatentFactorModelTier extends Tier {
 	 * @return the tier data
 	 */
 	public static TierData run(TierData data) {
-		Scanner console;
-		boolean question = false;
 		RealMatrix movieFeatureMatrix = null, featureUserMatrix = null;
-		
-		console = new Scanner(System.in);
-		
-		// Ask if load from file
-		/*System.out.println("Do you want to load the movie and user feature matrix from file?");
-		try {
-			question = Boolean.parseBoolean(console.nextLine());
-		} catch(InputMismatchException e) {
-			System.out.println("Did not understand your answer. Assuming NO.");
-			question = false;
-		}*/
-		
-		if(question) {
-			System.out.println("Trying to load files form current working directory...");
+
+		if(Main.getBooleanInput("Do you want to load the movie and user feature matrices from file?", false)) {
+			System.out.println("Trying to load files from current working directory...");
 			
 			// Load from file
-			movieFeatureMatrix = readMatrix("MoviesFeaturesMatrix.mat");
-			featureUserMatrix = readMatrix("FeaturesUsersMatrix.mat");
+			movieFeatureMatrix = MatUtils.readMatrix("MoviesFeaturesMatrix.mat");
+			featureUserMatrix = MatUtils.readMatrix("FeaturesUsersMatrix.mat");
 			
 			System.out.println("Loaded matrices from files.");
 		} else {
 			double rmse = 1.0, rmseLast = 0.0;
-			int counter = 0;
 			
 			// Create matrices
 			movieFeatureMatrix = new BlockRealMatrix(data.getMovieList().size(),MAX_FEATURES); // [m][f]
@@ -98,7 +79,6 @@ public class LatentFactorModelTier extends Tier {
 						|| (rmse <= rmseLast - MIN_IMPROV); ++epoch) {
 					double squareSum = 0.0;
 
-					++counter;
 					rmseLast = rmse; // for verify improvement
 
 					//http://buzzard.ups.edu/courses/2014spring/420projects/math420-UPS-spring-2014-gower-netflix-SVD.pdf
@@ -152,21 +132,12 @@ public class LatentFactorModelTier extends Tier {
 			System.out.println("Finished SVD at "+(new Date()));
 
 			// Ask to save to file
-			System.out.println("Do you want to save the movie and user feature matrix to file?");
-			
-			/*try {
-				question = Boolean.parseBoolean(console.nextLine());
-			} catch(InputMismatchException e) {
-				System.out.println("Did not understand your answer. Assuming NO.");
-				question = false;
-			}*/
-			
-			if(question) {
+			if(Main.getBooleanInput("Do you want to save the movie and user feature matrices to file?",false)) {
 				System.out.println("Writing movieFeature matrix to file...");
-				writeMatrix(movieFeatureMatrix,"MoviesFeaturesMatrix.mat");
+				MatUtils.writeMatrix(movieFeatureMatrix,"MoviesFeaturesMatrix.mat");
 				
 				System.out.println("Writing featureUser matrix to file...");
-				writeMatrix(featureUserMatrix,"FeaturesUsersMatrix.mat");
+				MatUtils.writeMatrix(featureUserMatrix,"FeaturesUsersMatrix.mat");
 			}
 		}		
 		
@@ -178,91 +149,7 @@ public class LatentFactorModelTier extends Tier {
 		// MIN SUM (r_xi -(mean + movieBias + userBias + q_i * p_x))^2
 		// + (l1*SUM(q_i)^2 + l2*SUM(p_x)^2 + l3*SUM(b_x)^2 + l4*SUM(b_i)^2)
 		
-		console.close();
-		
 		return data;
-	}
-	
-	/**
-	 * Write a RealMatrix to file.
-	 * 
-	 * The file is in binary format. All entries are saved as a double in
-	 * row-column order, preceded by two integers for the rowdimension and
-	 * columndimension of the matrix.
-	 * 
-	 * @param mat The matrix to store.
-	 * @param filename Name of the file to store in
-	 */
- 	private static void writeMatrix(RealMatrix mat, String filename) {
-		DataOutputStream out;
-		
-		try {
-			double data[][];
-			int m, n;
-			
-			out = new DataOutputStream(new FileOutputStream(filename));
-			
-			data = mat.getData();
-			
-			// Add M and N
-			m = data.length;
-			n = data[0].length;
-			
-			out.writeInt(m);
-			out.writeInt(n);
-			
-			// Add all data
-			for(int i = 0; i < m; ++i) {
-				for(int j = 0; j < n; ++j)
-					out.writeDouble(data[i][j]);
-			}
-			
-			out.close();
-		} catch(IOException ioe) {
-			System.out.println("Could not write matrix to file.");
-			ioe.printStackTrace();
-		}
-		
-		System.out.println("Wrote matrix, of "+mat.getRowDimension() + " x "+mat.getColumnDimension());
-	}
-	
-	/**
-	 * Read a RealMatrix from file.
-	 * @param filename Name of the file to read from.
-	 * @return
-	 */
-	private static RealMatrix readMatrix(String filename) {
-		DataInputStream in;
-		RealMatrix mat = null;
-		
-		try {
-			int m, n;
-			double data[][];
-			
-			in = new DataInputStream(new FileInputStream(filename));
-			
-			// Read M and N
-			m = in.readInt();
-			n = in.readInt();
-			
-			data = new double[m][n];
-			
-			for(int i = 0; i < m; ++i) {
-				for(int j = 0; j < n; ++j)
-					data[i][j] = in.readDouble();
-			}
-			
-			mat = new BlockRealMatrix(data);
-			
-			in.close();
-		} catch(IOException ioe) {
-			System.out.println("Could not read matrix from file.");
-			ioe.printStackTrace();
-		}
-		
-		System.out.println("Read matrix, of "+mat.getRowDimension() + " x "+mat.getColumnDimension());
-		
-		return mat;
 	}
 	
 	private static JFrame plotRMSE() {

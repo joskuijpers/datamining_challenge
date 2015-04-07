@@ -13,7 +13,7 @@ public class TierData {
 	// Storage
 	private UserList userList;
 	private MovieList movieList;
-	private RatingList ratingList, predRatings;
+	private RatingList ratingList, predRatings, verificationRatings;
 
 	// MovieMeanTier
 	private double movieMean;
@@ -113,6 +113,14 @@ public class TierData {
 
 	public void setFeatureUserMatrix(RealMatrix featureUserMatrix) {
 		this.featureUserMatrix = featureUserMatrix;
+	}
+
+	public RatingList getVerificationRatings() {
+		return verificationRatings;
+	}
+
+	public void setVerificationRatings(RatingList verificationRatings) {
+		this.verificationRatings = verificationRatings;
 	}
 	
 }

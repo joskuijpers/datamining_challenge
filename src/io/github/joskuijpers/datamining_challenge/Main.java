@@ -3,12 +3,18 @@ package io.github.joskuijpers.datamining_challenge;
 import io.github.joskuijpers.datamining_challenge.model.*;
 import io.github.joskuijpers.datamining_challenge.tiers.*;
 
+import java.util.InputMismatchException;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class Main {
+	private static Scanner console;
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
+		// Open a console
+		console = new Scanner(System.in);
+		
 		Locale.setDefault(Locale.US);
 		// Create user list, movie list, and list of ratings
 		UserList userList = new UserList();
@@ -28,7 +34,7 @@ public class Main {
 			predRatings.readFile("data/predictions.csv", userList, movieList);
 
 			// Perform rating predictions
-			predictRatings(userList, movieList, ratings, predRatings);
+			predictRatings(userList, movieList, ratings, predRatings, null);
 
 			// Write result file
 			predRatings.writeResultsFile("submission.csv");
@@ -42,12 +48,12 @@ public class Main {
 			RatingList predictions = new RatingList();
 			predictions.readFile("data/localtest/predictions.csv", userList, movieList);
 
-			// Perform rating predictions
-			predictRatings(userList, movieList, ratings, predictions);
-			
 			// Read list of actual rating. This list contains 1/4th of the actual ratings
 			RatingList verification = new RatingList();
 			verification.readFile("data/localtest/verification.csv", userList, movieList);
+			
+			// Perform rating predictions
+			predictRatings(userList, movieList, ratings, predictions, verification);
 			
 			// Compare and calculate RMSE
 			if(predictions.size() != verification.size()) {
@@ -73,6 +79,8 @@ public class Main {
 		}
 		
 		System.out.println("Finished running. Close all windows to quit.");
+		
+		console.close();
 	}
 
 	/**
@@ -85,11 +93,12 @@ public class Main {
 	 * @return
 	 */
 	public static RatingList predictRatings(UserList userList,
-			MovieList movieList, RatingList ratingList, RatingList predRatings) {
+			MovieList movieList, RatingList ratingList, RatingList predRatings, RatingList verification) {
 
 		// Initial tier data
 		TierData tierData = new TierData(userList, movieList, ratingList,
 				predRatings);
+		tierData.setVerificationRatings(verification);
 
 		// Compute mean of ratings
 		tierData = MovieMeanTier.run(tierData);
@@ -113,8 +122,7 @@ public class Main {
 		tierData = LatentFactorModelTier.run(tierData);
 		
 		// Compute the Collaborative Filtering matrices
-//		tierData = CollaborativeFilteringTier.run(tierData);
-//		System.out.println("CF afgerond");
+		tierData = CollaborativeFilteringTier.run(tierData);
 
 		// Predict with average per movie and bias per user.
 		tierData = PredictTier.run(tierData);
@@ -122,5 +130,30 @@ public class Main {
 		// Return predictions
 		return tierData.getPredRatings();
 	}
-
+	
+	/**
+	 * Ask a question to the userconsole, requesting a boolean.
+	 * 
+	 * @param question
+	 * @param def
+	 * @return
+	 */
+	public static boolean getBooleanInput(String question, boolean def) {
+		System.out.println(question);
+		
+		try {
+			String response = console.nextLine();
+			response = response.toLowerCase();
+			
+			if(response.compareTo("yes") == 0)
+				return true;
+			if(response.compareTo("no") == 0)
+				return false;
+			
+			return Boolean.parseBoolean(response);
+		} catch(InputMismatchException e) {
+			System.out.println("Did not understand your answer. Assuming "+def+".");
+			return def;
+		}
+	}
 }

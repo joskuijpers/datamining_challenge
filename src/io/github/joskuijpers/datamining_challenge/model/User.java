@@ -12,6 +12,10 @@ public class User {
 	private int numberOfRatings = 0;
 	private boolean ignored = false;
 
+	// testing
+	private int biasedNum = 0, cfNum = 0, lfmNum = 0;
+	private double biasedSum = 0.0, cfSum = 0.0, lfmSum = 0.0;
+	
 	public User(int _index, boolean _male, int _age, int _profession) {
 		this.index = _index;
 		this.male = _male;
@@ -69,4 +73,32 @@ public class User {
 	public void setIgnored(boolean ignored) {
 		this.ignored = ignored;
 	}
+
+	public void addBiasedError(double error) {
+		++biasedNum;
+		biasedSum += error * error;
+	}
+
+	public void addCFError(double error) {
+		++cfNum;
+		cfSum += error * error;
+	}
+
+	public void addLFMError(double error) {
+		++lfmNum;
+		lfmSum += error * error;
+	}
+
+	public double getBiasedRMSE() {
+		return Math.sqrt(biasedSum / (double)biasedNum);
+	}
+
+	public double getCFRMSE() {
+		return Math.sqrt(cfSum / (double)cfNum);
+	}
+
+	public double getLFMRMSE() {
+		return Math.sqrt(lfmSum / (double)lfmNum);
+	}
+
 }
