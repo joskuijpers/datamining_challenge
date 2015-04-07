@@ -24,8 +24,10 @@ public class MovieMeanTier extends Tier {
 					+ (1.0 / (f + 1.0))
 					* data.getRatingList().get(i).getRating();
 		}
-
+		
 		data.setMovieMean(movieMean);
+		
+		System.out.println("Calculated mean of all ratings: "+movieMean);
 
 		return data;
 	}

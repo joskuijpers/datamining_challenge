@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 
 import org.apache.commons.math3.linear.*;
 import org.jfree.chart.*;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -102,6 +101,7 @@ public class LatentFactorModelTier extends Tier {
 					++counter;
 					rmseLast = rmse; // for verify improvement
 
+					//http://buzzard.ups.edu/courses/2014spring/420projects/math420-UPS-spring-2014-gower-netflix-SVD.pdf
 					for (Rating rating : data.getRatingList()) {
 						double prediction, error, predictedInteraction;
 						double mf, uf, movieChange, userChange;
@@ -133,7 +133,7 @@ public class LatentFactorModelTier extends Tier {
 						mf = movieFeatureMatrix.getEntry(movieId, f);
 						uf = featureUserMatrix.getEntry(f, userId);
 
-						// Update the feature with regularization and cross training
+						// Update the feature with regularization and cross training (SGD)
 						movieChange = LRATE * (error * uf - K * mf);
 						userChange = LRATE * (error * mf - K * uf);
 
