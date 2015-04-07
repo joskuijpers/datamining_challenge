@@ -56,13 +56,13 @@ public class LatentFactorModelTier extends Tier {
 		console = new Scanner(System.in);
 		
 		// Ask if load from file
-		System.out.println("Do you want to load the movie and user feature matrix from file?");
+		/*System.out.println("Do you want to load the movie and user feature matrix from file?");
 		try {
 			question = Boolean.parseBoolean(console.nextLine());
 		} catch(InputMismatchException e) {
 			System.out.println("Did not understand your answer. Assuming NO.");
 			question = false;
-		}
+		}*/
 		
 		if(question) {
 			System.out.println("Trying to load files form current working directory...");
@@ -103,7 +103,7 @@ public class LatentFactorModelTier extends Tier {
 					rmseLast = rmse; // for verify improvement
 
 					for (Rating rating : data.getRatingList()) {
-						double prediction, error;
+						double prediction, error, predictedInteraction;
 						double mf, uf, movieChange, userChange;
 						int userId, movieId;
 						
@@ -115,16 +115,18 @@ public class LatentFactorModelTier extends Tier {
 						userId = rating.getUser().getIndex() - 1;
 
 						// Calculate current predicted value
-						prediction = movieFeatureMatrix.getRowVector(movieId)
+						predictedInteraction = movieFeatureMatrix.getRowVector(movieId)
 								.dotProduct(featureUserMatrix.getColumnVector(userId));
+						
+						prediction = data.getMovieMean() + rating.getUser().getBias() + rating.getMovie().getBias() + predictedInteraction;
 						
 						if(prediction > 5.0)
 							prediction = 5.0;
 						else if(prediction < 1.0)
 							prediction = 1.0;
 
-						// ERROR = (r_im - p*q)
-						error = rating.getRating() - prediction; // add more stuff here
+						// MIN (r_xi - (u + b_x + b_i + q_i*p_x) + ()
+						error = (rating.getRating() - prediction);
 						squareSum += error * error;
 
 						// Get current values
@@ -149,16 +151,15 @@ public class LatentFactorModelTier extends Tier {
 			}
 			System.out.println("Finished SVD at "+(new Date()));
 
-	
 			// Ask to save to file
 			System.out.println("Do you want to save the movie and user feature matrix to file?");
 			
-			try {
+			/*try {
 				question = Boolean.parseBoolean(console.nextLine());
 			} catch(InputMismatchException e) {
 				System.out.println("Did not understand your answer. Assuming NO.");
 				question = false;
-			}
+			}*/
 			
 			if(question) {
 				System.out.println("Writing movieFeature matrix to file...");
@@ -262,35 +263,6 @@ public class LatentFactorModelTier extends Tier {
 		System.out.println("Read matrix, of "+mat.getRowDimension() + " x "+mat.getColumnDimension());
 		
 		return mat;
-	}
-	
-	/**
-	 * Plot the singular values in order to find the knee.
-	 * 
-	 * @param singularValues array of singular values
-	 * @return the frame so it can be disposed of.
-	 */
-	private static JFrame plotSingularValues(double[] singularValues) {
-		JFreeChart chart;
-		ChartFrame frame;
-	
-		// Create dataset
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(int i = 0; i < singularValues.length; ++i) {
-			if(i % (singularValues.length / 25) == 0)
-				dataset.addValue(singularValues[i], "sv", i+"");
-		}
-		
-		// Create chart
-		chart = ChartFactory.createLineChart("Singular Values", "Feature", "Influence", dataset);//, PlotOrientation.HORIZONTAL, true, false, false);
-		
-		// Into a frame
-		frame = new ChartFrame("Singular Values", chart);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		
-		return frame;
 	}
 	
 	private static JFrame plotRMSE() {

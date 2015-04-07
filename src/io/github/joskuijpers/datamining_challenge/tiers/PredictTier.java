@@ -102,7 +102,9 @@ public class PredictTier extends Tier {
 			movieVector = movieFeatureMatrix.getRowVector(movieIndex);
 			userVector = featureUserMatrix.getColumnVector(userIndex);
 			
-			rating = movieVector.dotProduct(userVector);
+			// r_xi = u + b_x + b_i + q_i*p_x
+			// rating = moviemean + userbias + moviebias + usermovieinteraction
+			rating = data.getMovieMean() + predRating.getUser().getBias() + predRating.getMovie().getBias() + movieVector.dotProduct(userVector);
 			
 			// Clip the rating to 0.0 - 5.0
 			rating = Math.max(Math.min(5.0f, rating), 0.0f);
