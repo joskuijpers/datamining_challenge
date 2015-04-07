@@ -29,10 +29,12 @@ public class LatentFactorModelTier extends Tier {
 	// Parameters
 	private final static int MAX_FEATURES = 20;
 	private final static int MIN_EPOCHS = 40;
-	private final static double LRATE = 0.0035; //learning rate 		0.001  met 0.005 0.753
+	private final static double LRATE = 0.0035; //learning rate 		0.001
 	private final static double K = 0.02; // regularization 		0.015
 	private final static double MIN_IMPROV = 0.0005; // minimal improvement to continue	0.0001
 	private final static double FINIT = 0.1; // initial feature value
+	
+	// Best till now: 20, 40, 0.0035, 0.02, 0.0005, 0.1
 	
 	// chart
 	private static JFreeChart rmseChart;
